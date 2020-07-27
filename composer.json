@@ -9,8 +9,8 @@
     },
     "autoload" : {
         "psr-4": {
-            "zyk\\": "src/zyk/"
+            "zyk\\": "zyk/src/zyk/"
         },
-        "classmap": ["src/zyk/function/"]
+        "classmap": ["zyk/src/zyk/function/"]
     }
 }
