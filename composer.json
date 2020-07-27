@@ -11,6 +11,6 @@
         "psr-4": {
             "zyk\\": "src/zyk/"
         },
-        "classmap": ["src/zyk/function/"]
+        "classmap": ["src/zyk/func/"]
     }
 }
