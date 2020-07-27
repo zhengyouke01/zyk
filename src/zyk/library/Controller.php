@@ -10,6 +10,7 @@ use think\App;
 use think\Container;
 
 class Controller {
+
     use Send;
 
     /**
@@ -128,5 +129,5 @@ class Controller {
         unset($data['app'], $data['request']);
         return $data;
     }
-    
+
 }
