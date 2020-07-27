@@ -1,0 +1,15 @@
+{
+    "name": "zhengyouke/zyk",
+    "type": "library",
+    "description": "证优客系统组件化公用部分",
+    "homepage": "https://github.com/htxjie/zhengouke",
+    "require": {
+        "php": ">=7.0"
+    },
+    "autoload" : {
+        "psr-4": {
+            "zyk\\": "src/zyk/"
+        },
+        "classmap": ["src/zyk/function/"]
+    }
+}
