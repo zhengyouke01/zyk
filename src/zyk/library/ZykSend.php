@@ -7,12 +7,12 @@ declare(strict_types = 1);
 namespace zyk\library;
 
 
-trait Send {
+trait ZykSend {
 
-    protected $response;
+    protected $zykResponse;
 
-    public function __construct(Response $response) {
-        $this->response = $response;
+    public function __construct(ZykResponse $zykResponse) {
+        $this->zykResponse = $zykResponse;
     }
 
     /**
@@ -22,9 +22,10 @@ trait Send {
      * @param array $header 返回头
      * @param array $custom 返回链接
      */
-    public function successSend(string $msg = '', int $code = 200, $data = null, array $header = [], array $custom) {
+    public function successSend(string $msg = '', int $code = 200, $data = null, array $header = [], array $custom = []) {
         $data = $this->output($data);
-        call_user_func_array([$this->response, 'outputJson'], [$code, $msg, $data, $header, $custom]);
+        $this->zykResponse = new ZykResponse();
+        exit(call_user_func_array([$this->zykResponse, 'outputJson'], [$code, $msg, $data, $header, $custom]));
     }
 
     /**
@@ -40,7 +41,7 @@ trait Send {
      */
     public function errorSend($msg = '', $code = 400, $data = null, $header = [], $custom = []) {
         $data = $this->output($data);
-        call_user_func_array([$this->response, 'outputJson'], [$code, $msg, $data, $header, $custom]);
+        exit(call_user_func_array([$this->zykResponse, 'outputJson'], [$code, $msg, $data, $header, $custom]));
     }
 
 

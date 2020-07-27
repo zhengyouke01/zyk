@@ -4,14 +4,14 @@
  */
 declare(strict_types = 1);
 namespace zyk\library;
-use think\exception\ValidateException;
-use zyk\library\traits\Send;
 use think\App;
 use think\Container;
+use think\exception\ValidateException;
+use zyk\library\ZykSend;
 
-class Controller {
+class ZykController {
 
-    use Send;
+    use ZykSend;
 
     /**
      * @var array 前置操作方法列表
@@ -21,25 +21,14 @@ class Controller {
     protected $request;
 
     public function __construct(App $app) {
-        $this->initialize();
-
-        $this->app = $app ?: Container::get('app');
+        $this->app = $app;
         $this->request = $this->app['request'];
-
         // 前置操作方法
         if ($this->beforeActionList) {
             foreach ($this->beforeActionList as $method => $options) {
-                is_numeric($method) ?
-                    $this->beforeAction($options) :
-                    $this->beforeAction($method, $options);
+                $this->beforeAction($method, $options);
             }
         }
-
-    }
-
-    // 源自tp的封装初始化方法 用户继承
-    protected function initialize(){
-
     }
 
 
@@ -52,23 +41,15 @@ class Controller {
      */
     protected function beforeAction($method, $options = []) {
         if (isset($options['only'])) {
-            if (is_string($options['only'])) {
-                $options['only'] = explode(',', $options['only']);
-            }
-
             if (!in_array($this->request->action(), $options['only'])) {
                 return;
             }
         } elseif (isset($options['except'])) {
-            if (is_string($options['except'])) {
-                $options['except'] = explode(',', $options['except']);
-            }
-
             if (in_array($this->request->action(), $options['except'])) {
                 return;
             }
         }
-        call_user_func([$this, $method]);
+        call_user_func_array([$this, $method], []);
     }
 
 

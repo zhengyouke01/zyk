@@ -1,9 +1,9 @@
 <?php
-namespace zyk\lib\dingxianginc;
+namespace zyk\extend\dingxianginc;
 
-use zyk\lib\dingxianginc\model\CaptchaResponse;
-use zyk\lib\dingxianginc\model\CtuResponse;
-use zyk\lib\dingxianginc\util\SignUtil;
+use zyk\extend\dingxianginc\model\CaptchaResponse;
+use zyk\extend\dingxianginc\model\CtuResponse;
+use zyk\extend\dingxianginc\util\SignUtil;
 /**
  * Created by PhpStorm.
  * User: dingxiang-inc

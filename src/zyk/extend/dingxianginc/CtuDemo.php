@@ -6,7 +6,9 @@
  * Time: 上午10:35
  */
 
-include "./CtuClient.php";
+namespace zyk\extend\dingxianginc;
+
+use zyk\extend\dingxianginc\CtuClient;
 
 $url = "http://sec.dingxiang-inc.com/ctu/event.do";
 $appId = "appId";

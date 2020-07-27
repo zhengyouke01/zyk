@@ -1,11 +1,9 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: dingxiang-inc
- * Date: 2017/8/25
- * Time: 9:26
- */
-include ("CaptchaClient.php");
+
+namespace zyk\extend\dingxianginc;
+
+use zyk\extend\dingxianginc\CaptchaClient;
+
 /**
  * 构造入参为appId和appSecret
  * appId和前端验证码的appId保持一致，appId可公开

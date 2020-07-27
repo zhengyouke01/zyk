@@ -6,12 +6,11 @@
 namespace zyk\library;
 
 
-class Response {
+class ZykResponse {
 
     protected $responseType = 'json';
 
-    public function __construct($obj = null) {
-
+    public function __construct() {
     }
 
     /**
@@ -22,7 +21,7 @@ class Response {
      * @param array $custom 定义返回参数
      * @return false|string
      */
-    public function outputJson(int $code = 200, string $message = '', array $data = [], array $header = [], $custom = []) {
+    public function outputJson(int $code = 200, string $message = '', $data = null, array $header = [], $custom = []) {
         $return['code'] = $code;
         $return['message'] = $message;
         $return['data'] = is_array($data) ? $data : ['info' => $data];
