@@ -10,7 +10,7 @@
     "autoload" : {
         "psr-4": {
             "zyk\\": "src/zyk/"
-        },
-        "classmap": ["src/zyk/func/"]
-    }
+        }
+    },
+    "include-path": ["src/zyk/functoin/"]
 }
