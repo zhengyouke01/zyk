@@ -12,7 +12,7 @@
             "src/zyk/func/ArrayTools.php",
             "src/zyk/func/ExtendTools.php",
             "src/zyk/func/ServiceTools.php",
-            "src/zyk/func/StringTools.php",
+            "src/zyk/func/StringTools.php"
         ],
         "psr-4": {
             "zyk\\": "src/zyk/"
