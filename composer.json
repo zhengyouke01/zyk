@@ -2,15 +2,20 @@
     "name": "zhengyouke/zyk",
     "type": "library",
     "description": "证优客系统组件化公用部分",
-    "homepage": "https://github.com/htxjie/zhengouke",
+    "homepage": "https://github.com/zhengyouke01/zyk",
     "license": "MIT",
     "require": {
         "php": ">=7.0"
     },
     "autoload" : {
+        "files": [
+            "src/zyk/func/ArrayTools.php",
+            "src/zyk/func/ExtendTools.php",
+            "src/zyk/func/ServiceTools.php",
+            "src/zyk/func/StringTools.php",
+        ],
         "psr-4": {
             "zyk\\": "src/zyk/"
         }
-    },
-    "include-path": ["src/zyk/functoin/"]
+    }
 }

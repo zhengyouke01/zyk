@@ -5,7 +5,6 @@
 declare(strict_types = 1);
 namespace zyk\library;
 use think\App;
-use think\Container;
 use think\exception\ValidateException;
 use zyk\library\ZykSend;
 
@@ -22,11 +21,12 @@ class ZykController {
 
     public function __construct(App $app) {
         $this->app = $app;
-        $this->request = $this->app['request'];
+        $this->request = $this->app->request;
         // 前置操作方法
         if ($this->beforeActionList) {
             foreach ($this->beforeActionList as $method => $options) {
-                $this->beforeAction($method, $options);
+                //$this->beforeAction($method, $options);
+                call_user_func_array([$this, 'beforeAction'], [$method, $options]);
             }
         }
     }

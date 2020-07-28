@@ -7,13 +7,8 @@ declare(strict_types = 1);
 namespace zyk\library;
 
 
+
 trait ZykSend {
-
-    protected $zykResponse;
-
-    public function __construct(ZykResponse $zykResponse) {
-        $this->zykResponse = $zykResponse;
-    }
 
     /**
      * @param string $msg 信息
@@ -24,8 +19,7 @@ trait ZykSend {
      */
     public function successSend(string $msg = '', int $code = 200, $data = null, array $header = [], array $custom = []) {
         $data = $this->output($data);
-        $this->zykResponse = new ZykResponse();
-        exit(call_user_func_array([$this->zykResponse, 'outputJson'], [$code, $msg, $data, $header, $custom]));
+        exit(call_user_func_array([new ZykResponse(), 'outputJson'], [$code, $msg, $data, $header, $custom]));
     }
 
     /**
@@ -41,7 +35,7 @@ trait ZykSend {
      */
     public function errorSend($msg = '', $code = 400, $data = null, $header = [], $custom = []) {
         $data = $this->output($data);
-        exit(call_user_func_array([$this->zykResponse, 'outputJson'], [$code, $msg, $data, $header, $custom]));
+        exit(call_user_func_array([new ZykResponse(), 'outputJson'], [$code, $msg, $data, $header, $custom]));
     }
 
 

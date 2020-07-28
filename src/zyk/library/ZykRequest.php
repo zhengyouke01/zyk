@@ -3,6 +3,7 @@
 
 namespace zyk\library;
 
+
 class ZykRequest {
 
 
@@ -12,7 +13,9 @@ class ZykRequest {
 
     protected $server;
 
-    public function __construct() {
+    public function __construct(App $app) {
+        $this->app = $app;
+        $this->request = $this->app->request;
         $this->server = $_SERVER;
     }
 
@@ -49,19 +52,27 @@ class ZykRequest {
             $this->header = array_change_key_case($header);
         }
 
-        if ($name === '' && is_string($exception)) {
+        if ($name === '') {
             $exception = array_filter(explode(',', strtolower($exception)));
-            foreach ($headers as $hk => $hv) {
+            foreach ($this->header as $hk => $hv) {
                 if (in_array(strtolower($hk), $exception) ) {
-                    unset($headers[$hk]);
+                    unset($this->header[$hk]);
                 }
             }
+            return $this->header;
         } else {
             $name = str_replace('_', '-', strtolower($name));
+            return isset($this->header[$name]) ? $this->header[$name] : $default;
         }
-        return isset($this->header[$name]) ? $this->header[$name] : $default;
     }
 
-
+    /**
+     * 调用request的方法
+     * @param $name
+     * @param $arguments
+     */
+    public function __call($name, $arguments) {
+        return call_user_func_array([$this->request, $name], $arguments);
+    }
 
 }
