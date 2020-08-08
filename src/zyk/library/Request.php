@@ -6,7 +6,7 @@ namespace zyk\library;
 
 use think\App;
 
-class ZykRequest {
+class Request {
 
 
     protected $request;

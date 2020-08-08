@@ -4,12 +4,10 @@
 namespace zyk\library\Auth;
 
 
-use zyk\library\ZykRequest;
+use zyk\library\Request;
 
 abstract class Auth {
 
-    abstract public function checkAuth(ZykRequest $request);
-
-
+    abstract public function checkAuth(Request $request);
     
 }

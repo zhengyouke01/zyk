@@ -3,13 +3,12 @@
 
 namespace zyk\library;
 
-
 use think\App;
 use think\Container;
-use think\Controller;
+use think\Controller as TpController;
 use zyk\library\traits\Jump;
 
-class BaseController {
+class Controller {
     
     use Jump;
 
@@ -33,7 +32,14 @@ class BaseController {
     // 请求参数
     protected $param;
 
-    public function __construct(App $app, Controller $controller, Config $config) {
+    /**
+     * 前置操作方法列表（即将废弃）沿用Tp的方法
+     * @var array $beforeActionList
+     */
+    protected $beforeActionList = [];
+
+
+    public function __construct(App $app, TpController $controller, Config $config) {
         $this->app     = $app ?: Container::get('app');
         $this->controller = $controller;
         // 请求
@@ -47,7 +53,17 @@ class BaseController {
         $this->zykConfig = $config;
         // 注册登陆验证的方法 todo
         $this->auth();
+
+        // 前置操作方法 即将废弃 沿用Tp的
+        foreach ((array) $this->beforeActionList as $method => $options) {
+            is_numeric($method) ?
+                $this->beforeAction($options) :
+                $this->beforeAction($method, $options);
+        }
+
+        // 后置行为放到路由后置处理
     }
+
 
     protected function initialize(){
     }
@@ -60,7 +76,7 @@ class BaseController {
      * @param App $app
      */
     protected function initRequest(App $app) {
-        $this->request = app('zyk\library\ZykRequest', [$app]);
+        $this->request = app('zyk\library\Request', [$app]);
     }
 
     /**

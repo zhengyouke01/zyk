@@ -69,7 +69,7 @@ trait Jump {
      * @param  array     $header 发送的Header信息
      * @return void
      */
-    protected function error($msg = '', $url = null, $data = '', $wait = 3, array $header = [])
+    protected function error($msg = '', $data = '',  array $header = [])
     {
         $type = $this->getResponseType();
         $result = [
