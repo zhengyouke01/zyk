@@ -177,6 +177,9 @@ function zyk_get_arr_column(array $arr, string $key_name) {
     return $arr2;
 }
 
+function logiccc() {
+    var_dump(22);
+}
 
 
 
