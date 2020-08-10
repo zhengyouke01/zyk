@@ -6,7 +6,7 @@ namespace zyk\library;
 
 class Logic {
 
-    protected function success($msg, $data, $code = 0) {
+    public function success($msg, $data = [], $code = 1) {
         $res = [
             'status' => RESULT_SUCCESS,
             'msg' => $msg,

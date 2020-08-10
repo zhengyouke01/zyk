@@ -13,3 +13,82 @@ if (!function_exists('logic')) {
         return app()->create($name, $layer, $appendSuffix);
     }
 }
+
+
+/**
+ * 获取统一返回的状态码
+ * @author wxw 2019/12/12
+ *
+ * @param $data
+ *
+ * @return mixed
+ */
+function res_client_code($data) {
+    return $data['code'];
+}
+
+
+/**
+ * 获取统一返回的msg信息
+ * @author wxw 2019/12/12
+ *
+ * @param $data
+ *
+ * @return mixed
+ */
+function res_client_msg($data) {
+    return $data['msg'];
+}
+
+/**
+ * 获取统一返回的数据
+ * @author wxw 2019/12/12
+ *
+ * @param $data
+ *
+ * @return mixed
+ */
+function res_client_data($data) {
+    return $data['data'];
+}
+
+/**
+ * 获取统一返回的状态码
+ * @author wxw 2019/12/12
+ *
+ * @param $data
+ *
+ * @return mixed
+ */
+function res_get_code($data) {
+    return $data['code'];
+}
+
+
+/**
+ * 获取统一返回的msg信息
+ * @author wxw 2019/12/12
+ *
+ * @param $data
+ *
+ * @return mixed
+ */
+function res_get_msg($data) {
+    return $data['msg'];
+}
+
+/**
+ * 获取统一返回的数据
+ * @author wxw 2019/12/12
+ *
+ * @param $data
+ *
+ * @return mixed
+ */
+function res_get_data($data) {
+    if (res_get_code($data) == RESULT_ERROR) {
+        return false;
+    }
+    return $data['data'];
+}
+

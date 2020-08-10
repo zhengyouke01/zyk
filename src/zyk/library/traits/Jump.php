@@ -13,6 +13,7 @@ trait Jump {
      */
     final protected function jump($jump_type = null, $message = null, $data = null, $code = 0){
         if (is_array($jump_type)){
+            $jump_type = array_values($jump_type);
             switch (count($jump_type)) {
                 case 2  : list($jump_type, $message) = $jump_type; break;
                 case 3  : list($jump_type, $message, $data) = $jump_type; break;
