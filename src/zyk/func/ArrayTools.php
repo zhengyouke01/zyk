@@ -129,7 +129,7 @@ function zyk_array_key_change(array $arr, string $key_name) {
  * @param $fields array 需要的字段
  * @return mixed
  */
-function zyk_filter_array_fields(array $array, string $fields) {
+function zyk_filter_array_fields(array $array, array $fields) {
     foreach ($array as $key => $value) {
         if (!in_array($key, $fields)) {
             unset($array[$key]);
