@@ -6,7 +6,7 @@ namespace zyk\library;
 use think\App;
 
 
-class BaseValidate extends \think\validate{
+class Validate extends \think\Validate{
 
     /**
      * 验收手机号码
