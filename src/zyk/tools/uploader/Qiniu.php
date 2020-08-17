@@ -1,10 +1,5 @@
 <?php
-declare(strict_types = 1);
-/**
- * @author lwh 2019-12-03
- * @七牛云第三方类库公共类
- */
-namespace zyk\tools;
+namespace zyk\tools\uploader;
 
 use Qiniu\Auth;
 use Qiniu\Http\Client;
@@ -13,35 +8,6 @@ use Qiniu\Storage\UploadManager;
 use zyk\tools\BaseInterface;
 
 class Qiniu implements BaseInterface {
-
-
-
-    private $auth = null;
-    private $accessKey;//key
-    private $secretKey;//密钥
-    private $file_upload_domain;//访问域名
-    private $bucket;//空间
-    private $upload_url = 'http://up-z0.qiniu.com';//上传地址
-    private $callbackHost;//回调地址
-    private $ObjHost = 'http://rs.qiniu.com/';//
-    private $type = 2;//1-公用空间 2-私有空间
-    private $exit_file_key;
-    private $download_path;
-
-
-    public function __construct(array $option = []) {
-        $this->accessKey = $option['accessKey'] ?? '';
-        $this->secretKey = $option['secretKey'] ?? '';
-        $this->file_upload_domain = $option['file_upload_domain'] ?? '';
-        $this->bucket = $option['bucket'] ?? '';
-        $this->upload_url = $option['upload_url'] ?? '';
-        $this->callbackHost = $option['callbackHost'] ?? '';
-        $this->ObjHost = $option['ObjHost'] ?? $this->ObjHost;
-        $this->type = $option['type'] ?? $this->type;
-        $this->exit_file_key = $option['exit_file_key'] ?? '';
-        $this->download_path = $option['download_path'] ?? '';
-        $this->auth = new Auth($this->accessKey, $this->secretKey);
-    }
 
     /**
      * 服务基本信息
@@ -59,24 +25,16 @@ class Qiniu implements BaseInterface {
      * @param $type 类型,默认0,0-表示公有, 1-表示私有
      * @return string
      */
-    public function uploadToken(array $policy) {
-        if($this->type == 2) {
-            $policy['callbackUrl'] = $this->callbackHost.rtrim($policy['callbackUrl']);
-            return $this->auth->uploadToken($this->bucket, null, 108000, $policy);
+    public function uploadToken($policy, $type) {
+        if($type == 1) {
+            $auth = new Auth(config('app.qiniu.accessKey'), config('app.qiniu.secretKey'));
+            $policy['callbackUrl'] = config('qiniu.callbackHost').rtrim($policy['callbackUrl']);
+            return $auth->uploadToken(config('app.qiniu.bucket'), null, 108000, $policy);
         }else {
-
-            $policy['callbackUrl'] = $this->callbackHost.rtrim($policy['callbackUrl']);
-            return $this->auth->uploadToken($this->bucket, null, 108000, $policy);
+            $auth = new Auth(config('app.qiniu.accessKey'), config('app.qiniu.secretKey'));
+//            $policy['callbackUrl'] = config('pub_qiniu.callbackHost').rtrim($policy['callbackUrl']);
+            return $auth->uploadToken(config('app.qiniu.bucket'), null, 108000, $policy);
         }
-
-
-    }
-
-    /**
-     * 获取七牛上传token
-     */
-    public function qiniuToken(array $policy) {
-        return $this->auth->uploadToken($this->bucket, null, 108000, $policy);
     }
 
     /**
@@ -85,7 +43,7 @@ class Qiniu implements BaseInterface {
      * @return Auth
      */
     protected function downloadAuth() {
-        return $this->auth;
+        return new Auth(config('app.qiniu.accessKey'), config('app.qiniu.secretKey'));
     }
 
     /**
@@ -96,17 +54,18 @@ class Qiniu implements BaseInterface {
      * @param string $ext 加后缀，一般为下载连接
      * @return string 返回
      */
-    public function downloadUrl(int $type, string $fkey, string $ext = '') {
+    public function downloadUrl($type,$fkey, $ext = '') {
         if($type == 1) {
-            $url = $this->file_upload_domain.$fkey;
+            $url = config('app.qiniu.file_upload_domain').$fkey;
             if(!empty($ext)) {
-                $url .= "?attname=" .$ext;
+                $url .= "?attname=" . md5($fkey). $ext;
             }
-            return $this->auth->privateDownloadUrl($url);
+            $auth = $this->downloadAuth();
+            return $auth->privateDownloadUrl($url);
         }else {
-            $url = $this->file_upload_domain.$fkey;
+            $url = config('qiniu.file_upload_domain').$fkey;
             if(!empty($ext)) {
-                $url .= "?attname=" . $ext;
+                $url .= "?attname=" . md5($fkey). $ext;
             }
             return $url;
         }
@@ -121,8 +80,8 @@ class Qiniu implements BaseInterface {
      * @param int $height 高度
      * @return string 返回
      */
-    public function pubThumbUrl(string $fkey, int $type, int $width = 0, int $height = 0) {
-        return $this->file_upload_domain . $fkey . '?imageView2/' . $type . '/w/' . $width . '/h/' . $height;
+    public function pubThumbUrl($fkey, $type, $width = 0, $height = 0) {
+        return config('app.qiniu.file_upload_domain') . $fkey . '?imageView2/' . $type . '/w/' . $width . '/h/' . $height;
     }
 
     /**
@@ -134,9 +93,10 @@ class Qiniu implements BaseInterface {
      * @param int $height 高度
      * @return string 返回
      */
-    public function thumbUrl(string $fkey, int $type, int $width = 0, int $height = 0) {
-        $url = $this->file_upload_domain . $fkey . '?imageView2/' . $type . '/w/' . $width . '/h/' . $height;
-        return $this->auth->privateDownloadUrl($url);
+    public function thumbUrl($fkey, $type, $width = 0, $height = 0) {
+        $url = config('app.qiniu.file_upload_domain') . $fkey . '?imageView2/' . $type . '/w/' . $width . '/h/' . $height;
+        $auth = $this->downloadAuth();
+        return $auth->privateDownloadUrl($url);
     }
 
     /**
@@ -146,18 +106,19 @@ class Qiniu implements BaseInterface {
      * @param $fkey 图片文件key
      * @return mixed
      */
-    public function getFileMine(int $type, string $fkey) {
+    public function getFileMine($type,$fkey) {
         if($type == 1) {
-            $url  = '/stat/'.\Qiniu\base64_urlSafeEncode($this->bucket.':'.$fkey);
-            $auth = $this->auth->authorization($url);
+            $url  = '/stat/'.\Qiniu\base64_urlSafeEncode(config('qiniu.bucket').':'.$fkey);
+            $auth = $this->downloadAuth()->authorization($url);
             $headers['Authorization'] = $auth['Authorization'];
-            $res  = Client::get($this->ObjHost.$url, $headers);
+            $res  = Client::get(config('qiniu.ObjHost').$url, $headers);
             return $res->json();
         }else {
-            $url  = '/stat/'.\Qiniu\base64_urlSafeEncode($this->bucket.':'.$fkey);
-            $auth = $this->auth->authorization($url);
+            $url  = '/stat/'.\Qiniu\base64_urlSafeEncode(config('pub_qiniu.bucket').':'.$fkey);
+            $auth = new Auth(config('pub_qiniu.accessKey'), config('pub_qiniu.secretKey'));
+            $auth = $auth->authorization($url);
             $headers['Authorization'] = $auth['Authorization'];
-            $res  = Client::get($this->ObjHost.$url, $headers);
+            $res  = Client::get(config('pub_qiniu.ObjHost').$url, $headers);
             return $res->json();
         }
     }
@@ -170,7 +131,7 @@ class Qiniu implements BaseInterface {
      * @param bool $need_mine
      * @return array|bool
      */
-    public function pubDownloadFile(int $type, string $file_key, bool $need_mine = false) {
+    public function pubDownloadFile($type, $file_key, $need_mine = false) {
         $ext = '';
         if ($need_mine) {
             // 需要获取元数据信息，主要为了补充后缀
@@ -180,7 +141,7 @@ class Qiniu implements BaseInterface {
             }
         }
 
-        $save_path = $this->download_path.'file_temp/'.$type.'/';
+        $save_path = config('download_path').'file_temp/'.$type.'/';
         $file_name = md5($type.$file_key).$ext;
 
         $file_download_path = $this->pubDownloadUrl($file_key, $file_name);
@@ -206,7 +167,7 @@ class Qiniu implements BaseInterface {
      * @param bool $need_mine
      * @return array|bool
      */
-    public function downloadFile(int $type, string $file_key, bool $need_mine = false) {
+    public function downloadFile($type, $file_key, $need_mine = false) {
         $ext = '';
         if ($need_mine) {
             // 需要获取元数据信息，主要为了补充后缀
@@ -216,7 +177,7 @@ class Qiniu implements BaseInterface {
             }
         }
 
-        $save_path = $this->download_path.'file_temp/'.$type.'/';
+        $save_path = config('download_path').'file_temp/'.$type.'/';
         $file_name = md5($type.$file_key).$ext;
 
         $file_download_path = $this->downloadUrl(1,$file_key, $file_name);
@@ -241,9 +202,9 @@ class Qiniu implements BaseInterface {
      * @param $key 图片文件key
      * @return mixed 返回
      */
-    public function delFile(string $key) {
+    public function delFile($key) {
         $bucketManager = new BucketManager($this->downloadAuth());
-        return $bucketManager->delete($this->bucket, $key);
+        return $bucketManager->delete(config('qiniu.bucket'), $key);
     }
 
     /**
@@ -252,10 +213,11 @@ class Qiniu implements BaseInterface {
      * @param $pic_url 地址
      * @return bool 返回
      */
-    public function uploadPicUrl(string $pic_url) {
+    public function uploadPicUrl($pic_url) {
         $upload = new UploadManager();
         $file_name = md5(md5($pic_url).time().rand(1000, 9999));
-        $upToken = $this->auth->uploadToken($this->bucket, null, 3600);
+        $auth = new Auth(config('pub_qiniu.accessKey'), config('pub_qiniu.secretKey'));
+        $upToken = $auth->uploadToken(config('pub_qiniu.bucket'), null, 3600);
         $data = file_get_contents($pic_url);
         if (!$data) {
             return false;
@@ -273,11 +235,12 @@ class Qiniu implements BaseInterface {
      * @param $image_txt 内容
      * @return bool 返回
      */
-    public function uploadPicBase64(string $image_txt) {
+    public function uploadPicBase64($image_txt) {
         $image = trim($image_txt);
         if ($image) {
-            $upToken = $this->auth->uploadToken($this->bucket, null, 3600);
-            $upUrl = $this->upload_url . '/putb64/-1';
+            $auth = new Auth(config('app.pub_qiniu.accessKey'), config('app.pub_qiniu.secretKey'));
+            $upToken = $auth->uploadToken(config('pub_qiniu.bucket'), null, 3600);
+            $upUrl = config('app.pub_qiniu.upload_url') . '/putb64/-1';
             $qiniu = $this->phpCurlImg($upUrl, $image, $upToken);
             $qiniuArr = json_decode($qiniu,true);
             if(!empty($qiniuArr['key'])) {
@@ -296,7 +259,7 @@ class Qiniu implements BaseInterface {
      * @param $upToken token
      * @return bool|string 返回
      */
-    public function phpCurlImg(string $remote_server, string $post_string, string $upToken) {
+    public function phpCurlImg($remote_server,$post_string,$upToken) {
         $headers = array();
         $headers[] = 'Content-Type:application/octet-stream';
         $headers[] = 'Authorization:UpToken '.$upToken;
@@ -321,7 +284,7 @@ class Qiniu implements BaseInterface {
      * @param int $height 高度
      * @return bool|string 返回
      */
-    public function cropPubImg(string $key, string $gravity = 'NorthWest',  int $witch = 0, int $height = 0) {
+    public function cropPubImg($key, $gravity = 'NorthWest',  $witch = 0, $height = 0) {
         $url = $this->pubDownloadUrl($key);
         $url = $url."?imageMogr2/gravity/{$gravity}/crop/";
         if (!empty($witch) && !empty($height)) {
@@ -343,7 +306,7 @@ class Qiniu implements BaseInterface {
      * @param int $height 高度
      * @return bool|string 返回
      */
-    public function cropPrivImg(string $key, string $gravity = 'NorthWest',  int $witch = 0, int $height = 0) {
+    public function cropPrivImg($key, $gravity = 'NorthWest',  $witch = 0, $height = 0) {
         $url = $this->downloadUrl(1,$key);
         $url = $url."?imageMogr2/gravity/{$gravity}/crop/";
         if (!empty($witch) && !empty($height)) {
@@ -369,12 +332,12 @@ class Qiniu implements BaseInterface {
      * @param $imgwidth 图片文件宽
      * @return string 展示链接
      */
-    public function getWatermarkTTUrl(string $fkey, string $watermark, string $gravity, int $type, int $width = 0, int $height = 0, int $imgwidth) {
+    public function getWatermarkTTUrl($fkey, $watermark, $gravity, $type, $width = 0, $height = 0, $imgwidth) {
         $font_width = mb_strlen($watermark, 'UTF-8');
         $size       = intval($imgwidth * 10 / $font_width);
         $water      = 'watermark/2/text/' . $this->base64UrlSafeEncode($watermark) . '/gravity/' . $gravity . '/dissolve/100/font/' . $this->base64_urlSafeEncode('微软雅黑') . '/fontsize/' . $size . '/fill/' . $this->base64_urlSafeEncode('#e7e7e7');
         $image      = 'imageView2/' . $type . '/w/' . $width . '/h/' . $height;
-        $url        = $this->file_upload_domain . $fkey . '?' . $water . '|' . $image;
+        $url        = config('qiniu.file_upload_domain') . $fkey . '?' . $water . '|' . $image;
         return $this->getAuthorization($url);
     }
 
@@ -391,13 +354,13 @@ class Qiniu implements BaseInterface {
      * @param $imgheight 图片文件的高
      * @return string 展示链接
      */
-    public function getWatermarkImageThumbUrl(string $fkey, string $watermark, string $gravity, int $type, int $width = 0, int $height = 0, int $imgwidth, int $imgheight) {
+    public function getWatermarkImageThumbUrl($fkey, $watermark, $gravity, $type, $width = 0, $height = 0, $imgwidth, $imgheight) {
 
         $ws    = $imgwidth > $imgheight ? 0.7 : 0.5;
-        $image = $this->downloadUrl(1, $watermark);
+        $image = $this->downloadUrl(1,$watermark);
         $water = 'watermark/1/image/' . $this->base64UrlSafeEncode($image) . '/dissolve/100/gravity/' . $gravity . '/ws/' . $ws."/wst/1";
         $image = 'imageView2/' . $type . '/w/' . $width . '/h/' . $height;
-        $url   = $this->file_upload_domain . $fkey . '?' . $water . '|' . $image;
+        $url   = config('qiniu.file_upload_domain') . $fkey . '?' . $water . '|' . $image;
         return $this->getAuthorization($url);
     }
 
@@ -411,11 +374,11 @@ class Qiniu implements BaseInterface {
      * @param $width 宽度
      * @return string 返回
      */
-    public function getTextWatermarkPrivateDownloadUrl(string $fkey, string $alias = '', string $watermark, string $gravity, int $width) {
+    public function getTextWatermarkPrivateDownloadUrl($fkey, $alias = '', $watermark, $gravity, $width) {
         $font_width = mb_strlen($watermark, 'UTF-8');
         $size       = intval($width * 10 / $font_width);
         $water      = 'watermark/2/text/' . $this->base64UrlSafeEncode($watermark) . '/gravity/' . $gravity . '/dissolve/100/font/' . $this->base64_urlSafeEncode('微软雅黑') . '/fontsize/' . $size . '/fill/' . $this->base64_urlSafeEncode('#e7e7e7');
-        $url        = $this->file_upload_domain . $fkey . '?' . $water;
+        $url        = config('qiniu.file_upload_domain') . $fkey . '?' . $water;
         if (!empty($alias)) {
             $alias = urlencode($alias);
             $url   .= "&attname=$alias";
@@ -434,11 +397,11 @@ class Qiniu implements BaseInterface {
      * @param $height 高度
      * @return string 返回
      */
-    public function getImageWatermarkPrivateDownloadUrl(string $fkey, string $alias = '', string $watermark, string $gravity, int $width, int $height) {
+    public function getImageWatermarkPrivateDownloadUrl($fkey, $alias = '', $watermark, $gravity, $width, $height) {
         $ws    = $width > $height ? 0.7 : 0.5;
         $image = $this->downloadUrl(1,$watermark);
         $water = 'watermark/1/image/' . $this->base64UrlSafeEncode($image) . '/dissolve/100/gravity/' . $gravity . '/ws/' . $ws."/wst/1";
-        $url   = $this->file_upload_domain . $fkey . '?' . $water;
+        $url   = config('qiniu.file_upload_domain') . $fkey . '?' . $water;
         if (!empty($alias)) {
             $alias = urlencode($alias);
             $url   .= "&attname=$alias";
@@ -449,20 +412,16 @@ class Qiniu implements BaseInterface {
     /**
      * 上传单个文件（支持分片上传）
      * @author lwh 2019-12-03
-     * @modify LYJ 2020.06.01 增加参数key 保持外部可以自定义文件key值
      * @param $file_path 地址
      * @param $auth_token token
      * @param array $params 参数
-     * @param string $fileKey 七牛云key值
      * @return array 参数
      * @throws \Exception
      */
-    public function uploadSingleFile(string $file_path, string $auth_token, array $params = [], string $fileKey = '') {
+    public function uploadSingleFile($file_path, $auth_token, $params = []) {
         $uploader = new UploadManager();
-        if (!$fileKey) {
-            $fileKey = pathinfo($file_path, PATHINFO_EXTENSION);
-        }
-        return $uploader->putFile($auth_token, $fileKey, $file_path, $params);
+        $file_ext = pathinfo($file_path, PATHINFO_EXTENSION);
+        return $uploader->putFile($auth_token, md5($file_path) . '.' . $file_ext, $file_path, $params);
     }
 
     /**
@@ -473,7 +432,7 @@ class Qiniu implements BaseInterface {
      * @param $alias string 文件别名
      * @return string 返回
      */
-    public function watermarkZipPackSingleFileUrl(string $fkey, string $fname, string $alias = '', string $watermark, string $gravity, int $width) {
+    public function watermarkZipPackSingleFileUrl($fkey, $fname, $alias = '', $watermark, $gravity, $width) {
         $file_public_url = $this->getTextWatermarkPrivateDownloadUrl($fkey, $fname, $watermark, $gravity, $width);
         $url             = '/url/' . $this->base64UrlSafeEncode($file_public_url);
         if (!empty($alias)) {
@@ -482,8 +441,9 @@ class Qiniu implements BaseInterface {
         return $url;
     }
 
-    public function getAuthorization(string $url) {
-        return $this->auth->privateDownloadUrl($url);
+    public function getAuthorization($url) {
+        $auth = new Auth(config('qiniu.accessKey'), config('qiniu.secretKey'));
+        return $auth->privateDownloadUrl($url);
     }
 
     /**
@@ -493,8 +453,9 @@ class Qiniu implements BaseInterface {
      * @param $body body
      * @return array 返回
      */
-    public function getZipAuthorization(string $url, string $body) {
-        $authorization = $this->auth->authorization($url, $body, 'application/x-www-form-urlencoded');
+    public function getZipAuthorization($url, $body) {
+        $auth          = new Auth(config('qiniu.accessKey'), config('qiniu.secretKey'));
+        $authorization = $auth->authorization($url, $body, 'application/x-www-form-urlencoded');
         if ($authorization['Authorization']) {
             return $authorization['Authorization'];
         }
@@ -509,9 +470,9 @@ class Qiniu implements BaseInterface {
      * @param $alias string 文件别名
      * @return string 返回
      */
-    public function zipPackSingleFileUrl(string $fkey, string $fname, string $alias = '') {
+    public function zipPackSingleFileUrl($fkey, $fname, $alias = '') {
         $file_public_url = $this->downloadUrl(1,$fkey, $fname);
-        $url = '/url/' . $this->base64UrlSafeEncode($file_public_url);
+        $url             = '/url/' . $this->base64UrlSafeEncode($file_public_url);
         if (!empty($alias)) {
             $url .= '/alias/' . $this->base64UrlSafeEncode($alias);
         }
@@ -525,8 +486,8 @@ class Qiniu implements BaseInterface {
      * @param $size 大小
      * @return string 返回
      */
-    public function imageMogrFileSizeLimitUrl(string $fkey, int $size) {
-        $url = $this->file_upload_domain . $fkey . '?imageMogr2/size-limit/' . $size;
+    public function imageMogrFileSizeLimitUrl($fkey, $size) {
+        $url = config('app.qiniu.file_upload_domain') . $fkey . '?imageMogr2/size-limit/' . $size;
         return $this->getAuthorization($url);
     }
 
@@ -536,15 +497,18 @@ class Qiniu implements BaseInterface {
      * @param $fops 参数
      * @return string 返回
      */
-    public function pfopZipFileParams(string $fops) {
+    public function pfopZipFileParams($fops) {
+        $bucket        = config('qiniu.bucket');
+        $exit_file_key = config('qiniu.exit_file_key');
         $encoding      = 'utf-8';
         //处理操作系统编码，如果是win则修改成gbk
         $agent = $_SERVER['HTTP_USER_AGENT'];
         if (preg_match('/win/i', $agent)) {
             $encoding = 'gbk';
         }
+
         $fops = 'mkzip/2' . '/encoding/' . $this->base64UrlSafeEncode($encoding) . $fops;
-        return "bucket=$this->bucket&key=$this->exit_file_key&fops=$fops";
+        return "bucket=$bucket&key=$exit_file_key&fops=$fops";
     }
 
     /**
@@ -553,7 +517,7 @@ class Qiniu implements BaseInterface {
      * @param $data 参数
      * @return mixed 返回
      */
-    public function base64UrlSafeEncode(string $data) {
+    public function base64UrlSafeEncode($data) {
         $find    = array('+', '/');
         $replace = array('-', '_');
         return str_replace($find, $replace, base64_encode($data));
@@ -567,37 +531,12 @@ class Qiniu implements BaseInterface {
      * @param string $attrNmae
      * @return string
      */
-    public function downloadFileUrl(string $fkey, string $ext = '', string $attrNmae = '') {
-        $url = $this->file_upload_domain . $fkey;
+    public function downloadFileUrl($fkey, $ext = '', $attrNmae = '') {
+        $url = config('pub_qiniu.file_upload_domain') . $fkey;
         if(!empty($ext)) {
             $url .= empty($attrNmae) ? "?attname=" . md5($fkey). $ext : "?attname=" . $attrNmae . $ext;
         }
         return $url;
-    }
-
-    /**
-     * 获取图片信息
-     * @author LYJ 2020.05.22
-     * @param string $fkey 七牛key
-     */
-    public function getImageInfo(string $fkey) {
-        $url = $this->file_upload_domain.$this->file_upload_domain . $fkey.'?imageInfo';
-        $client = Client::get($url);
-        return $client->json();
-    }
-
-    /**
-     * 查询文件信息
-     * @author LYJ 2020.05.29
-     * @param string $fkey key值
-     */
-    public function getFileInfo(string $fkey) {
-        $entry = $this->bucket.':'.$fkey;
-        $encodedEntryURI = $this->base64UrlSafeEncode($entry);
-        $url = 'https://rs.qbox.me/stat/'.$encodedEntryURI;
-        $headers = $this->auth->authorization($url);
-        $client = Client::get($url, $headers);
-        return $client->json();
     }
 
 }
