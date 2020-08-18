@@ -6,6 +6,16 @@ namespace zyk\library;
 
 class Config {
 
+    protected $sysTags = null;
+
+    public function __construct() {
+        $tags = include __DIR__.'/SysteamTag.php';
+        if ($tags) {
+            $this->sysTags = $tags['sys_tags'];
+        }
+    }
+
+
     protected $auth = '\\zyk\\library\\Auth\\AppAuth';
 
     protected $ruleSysLink = [
@@ -28,6 +38,13 @@ class Config {
         ZYK_ORGANIZE => '审核机构'
     ];
 
+    /**
+     * 获取配置内容
+     * @author wxw 2020/8/18
+     *
+     * @param $name
+     * @return |null
+     */
     public function getConf($name) {
         if (isset($this->$name)) {
             return $this->$name;
@@ -35,10 +52,32 @@ class Config {
         return null;
     }
 
+    /**
+     * 获取系统角色的中文
+     * @author wxw 2020/8/18
+     *
+     * @param $roleType
+     * @return bool|string
+     */
     public function getRoleName($roleType) {
         if (isset($this->roleName[$roleType])) {
             return $this->roleName[$roleType];
         }
         return false;
     }
+
+    /**
+     * 获取系统标示
+     * @author wxw 2020/8/18
+     *
+     * @param $sys
+     * @return bool|mixed
+     */
+    public function getSys($sys) {
+        if (isset($this->sysTags[$sys])) {
+            return $this->sysTags[$sys];
+        }
+        return false;
+    }
+
 }

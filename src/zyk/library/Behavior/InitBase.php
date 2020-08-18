@@ -67,11 +67,13 @@ class InitBase{
      *
      */
     private function initProductConst() {
-        defined('ZYK_SUPPLY_SYS') or  define('ZYK_SUPPLY_SYS', 1) ; // 供应链系统
-        defined('ZYK_PRODECT_SYS') or  define('ZYK_PRODECT_SYS', 2) ; // 项目系统
-        defined('ZYK_SERVICE_SYS') or  define('ZYK_SERVICE_SYS', 3) ; // 服务系统
-        defined('ZYK_FINANCE_SYS') or  define('ZYK_FINANCE_SYS', 4) ; // 财务系统
-        defined('ZYK_OPERATION_SYS') or  define('ZYK_OPERATION_SYS', 5) ; // 运维系统
+        $tags = include __DIR__.'/../SysteamTag.php';
+        if ($tags) {
+            array_walk($tags['sys_tags'], function ($tag, $key) {
+                defined($tag) or  define($tag, $key) ;
+            });
+        }
+
     }
 
     /**

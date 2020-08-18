@@ -12,9 +12,6 @@ class Logic {
         $this->zykConf = $config;
     }
 
-
-    
-
     public function success($msg, $data = [], $code = 1) {
         $res = [
             'status' => RESULT_SUCCESS,
