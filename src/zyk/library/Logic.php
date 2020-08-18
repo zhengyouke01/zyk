@@ -6,6 +6,15 @@ namespace zyk\library;
 
 class Logic {
 
+    protected $zykConf = null;
+
+    public function __construct(Config $config) {
+        $this->zykConf = $config;
+    }
+
+
+    
+
     public function success($msg, $data = [], $code = 1) {
         $res = [
             'status' => RESULT_SUCCESS,

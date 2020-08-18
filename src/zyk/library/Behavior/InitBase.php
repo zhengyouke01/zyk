@@ -56,6 +56,22 @@ class InitBase{
 
         // 初始化会员角色常量
         $this ->initUserRole();
+
+        // 初始化项目系统常量
+        $this->initProductConst();
+    }
+
+    /**
+     * 初始化系统
+     * @author wxw 2020/8/18
+     *
+     */
+    private function initProductConst() {
+        defined('ZYK_SUPPLY_SYS') or  define('ZYK_SUPPLY_SYS', 1) ; // 供应链系统
+        defined('ZYK_PRODECT_SYS') or  define('ZYK_PRODECT_SYS', 2) ; // 项目系统
+        defined('ZYK_SERVICE_SYS') or  define('ZYK_SERVICE_SYS', 3) ; // 服务系统
+        defined('ZYK_FINANCE_SYS') or  define('ZYK_FINANCE_SYS', 4) ; // 财务系统
+        defined('ZYK_OPERATION_SYS') or  define('ZYK_OPERATION_SYS', 5) ; // 运维系统
     }
 
     /**
@@ -65,9 +81,14 @@ class InitBase{
         define('ZYK_ADMINISTRATOR'  ,1);  //管理员
         define('ZYK_SALE'     , 2);       //销售
         define('ZYK_CONSULT'   , 3);      //咨询老师
-        define('ZYK_ORGANIZE', 4);        //机构
-        define('ZYK_MANAGER', 5);        //客户经理
+        define('ZYK_ORGANIZE', 4);        //审核机构
+        define('ZYK_MANAGER', 5);        // 客户经理
         define('ZYK_AREA_MANAGER', 6);        //区域经理
+        defined('ZYK_DECLARE') or  define('ZYK_DECLARE', 7); // 申报人员
+        defined('ZYK_CUSTOMER') or  define('ZYK_CUSTOMER', 8); // 客服
+        defined('ZYK_FINANCE') or  define('ZYK_FINANCE', 9); // 财务
+        defined('ZYK_PRESALE') or  define('ZYK_PRESALE', 10); // 售前
+
     }
 
 

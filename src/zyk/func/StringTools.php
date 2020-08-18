@@ -162,5 +162,13 @@ function zyk_upper_number(int $number) {
     return $upper;
 }
 
+/**
+ * 创建盐
+ * @param int $length
+ * @return bool|string
+ */
+function zyk_create_salt($length = -6) {
+    return $salt = substr(uniqid((string)rand()), $length);
+}
 
 
