@@ -19,10 +19,15 @@ class Config {
     protected $auth = '\\zyk\\library\\Auth\\AppAuth';
 
     protected $ruleSysLink = [
-        ZYK_CONSULT => ZYK_SUPPLY_SYS,
+        ZYK_SALE => ZYK_SERVICE_SYS,
+        ZYK_CONSULT => ZYK_PRODECT_SYS,
         ZYK_DECLARE => ZYK_PRODECT_SYS,
+        ZYK_CUSTOMER => ZYK_SERVICE_SYS,
+        ZYK_FINANCE => ZYK_FINANCE_SYS,
+        ZYK_PRESALE => ZYK_SERVICE_SYS,
+        ZYK_MANAGE => ZYK_PRODECT_SYS
     ];
-
+    
     /**
      * 角色对应名称
      * @var string[]

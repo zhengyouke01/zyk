@@ -14,8 +14,15 @@ class InitBase{
 
     protected $app ;
 
+    protected $tags = null;
+
     public function __construct(App $app) {
         $this->app = $app ?: Container::get('app');
+
+        if (is_null($this->tags)) {
+            $tags = include __DIR__.'/../SysteamTag.php';
+            $this->tags = $tags;
+        }
     }
 
     /**
@@ -67,9 +74,8 @@ class InitBase{
      *
      */
     private function initProductConst() {
-        $tags = include __DIR__.'/../SysteamTag.php';
-        if ($tags) {
-            array_walk($tags['sys_tags'], function ($tag, $key) {
+        if ($this->tags) {
+            array_walk($this->tags['sys_tags'], function ($tag, $key) {
                 defined($tag) or  define($tag, $key) ;
             });
         }
@@ -80,17 +86,11 @@ class InitBase{
      * 初始化角色常量
      */
     private function initUserRole(){
-        define('ZYK_ADMINISTRATOR'  ,1);  //管理员
-        define('ZYK_SALE'     , 2);       //销售
-        define('ZYK_CONSULT'   , 3);      //咨询老师
-        define('ZYK_ORGANIZE', 4);        //审核机构
-        define('ZYK_MANAGER', 5);        // 客户经理
-        define('ZYK_AREA_MANAGER', 6);        //区域经理
-        defined('ZYK_DECLARE') or  define('ZYK_DECLARE', 7); // 申报人员
-        defined('ZYK_CUSTOMER') or  define('ZYK_CUSTOMER', 8); // 客服
-        defined('ZYK_FINANCE') or  define('ZYK_FINANCE', 9); // 财务
-        defined('ZYK_PRESALE') or  define('ZYK_PRESALE', 10); // 售前
-
+        if ($this->tags) {
+            array_walk($this->tags['user_roles'], function ($tag, $key) {
+                defined($tag) or  define($tag, $key) ;
+            });
+        }
     }
 
 
