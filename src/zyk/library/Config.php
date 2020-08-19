@@ -26,7 +26,8 @@ class Config {
         ZYK_FINANCE => ZYK_FINANCE_SYS,
         ZYK_PRESALE => ZYK_SERVICE_SYS,
         ZYK_MANAGE => ZYK_PRODECT_SYS,
-        ZYK_PRESALE => ZYK_SERVICE_SYS
+        ZYK_PRESALE => ZYK_SERVICE_SYS,
+        ZYK_PROJECT_ASSISTANT => ZYK_SUPPLY_SYS
     ];
 
     /**
@@ -43,6 +44,16 @@ class Config {
         ZYK_ADMINISTRATOR => '管理员',
         ZYK_ORGANIZE => '审核机构',
         ZYK_MANAGE => '行政人员'
+    ];
+
+    /**
+     * 身份等级对应名称
+     * @var string[]
+     */
+    protected $identityLevelName = [
+        ZYK_LEVEL_MANAGER => '区域经理',
+        ZYK_LEVEL_SUPERVISOR => '员工主管',
+        ZYK_LEVEL_PERSONNEL => '一般员工',
     ];
 
 
@@ -68,10 +79,7 @@ class Config {
      * @return bool|string
      */
     public function getRoleName($roleType) {
-        if (isset($this->roleName[$roleType])) {
-            return $this->roleName[$roleType];
-        }
-        return false;
+        return $this->getVal('roleName', $roleType); // 兼容之前的写法
     }
 
     /**
@@ -82,10 +90,25 @@ class Config {
      * @return bool|mixed
      */
     public function getSys($sys) {
-        if (isset($this->sysTags[$sys])) {
-            return $this->sysTags[$sys];
+        return $this->getVal('sysTags', $sys); // 兼容之前的写法
+    }
+
+    /**
+     * 获取配置的数
+     * @author wxw 2020/8/19
+     *
+     * @param $var
+     * @param $field
+     * @return bool
+     */
+    public function getVal($var, $field) {
+        if (!isset($this->$var)) {
+             return false;
+        }
+        $data = $this->$var;
+        if (isset($data[$field])) {
+            return $data[$field];
         }
         return false;
     }
-
 }

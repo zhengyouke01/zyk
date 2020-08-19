@@ -181,5 +181,32 @@ function logiccc() {
     var_dump(22);
 }
 
+/**
+ * 获取所有下级信息
+ * @param array $data
+ * @param int $pid
+ * @param string $p_name
+ * @param string $s_name
+ * @return array
+ */
+function get_childrens($data = [], $pid = 0, $p_name='pid' , $s_name='id') {
+    $allchild=array();//最终结果
+    $info=array($pid);//第一次执行时候
+    do {
+        $child=array();
+        $state=false;
+        foreach ($info as $value) {
+            foreach ($data as $key => $val) {
+                if($val[$p_name] == $value){
+                    $allchild[]=$val[$s_name];//找到我的下级立即添加到最终结果中
+                    $child[]=$val[$s_name];//将我的下级id保存起来用来下轮循环他的下级
+                    $state=true;
+                }
+            }
+            $info=$child;//foreach中找到的我的下级集合,用来下次循环
+        }
 
+    }while ($state==true);
+    return $allchild;
+}
 
