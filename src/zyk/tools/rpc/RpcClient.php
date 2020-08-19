@@ -101,9 +101,15 @@ class RpcClient implements BaseInterface {
     protected function processRes($data) {
         $data = json_decode($data, true);
         if (!$data) {
-            return ['code' => -1, 'msg' => '返回信息错误'];
+            throw new \Exception('rpc exception:'. '返回信息错误');
         }
-        return $data;
+        if ($data['code'] != 0) {
+            throw new \Exception('rpc exception:'. $data['msg']);
+        }
+        if (!isset($data['data'])) {
+            throw new \Exception('rpc exception:'. '返回信息错误');
+        }
+        return $data['data'];
     }
 
 }

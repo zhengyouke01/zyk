@@ -25,9 +25,10 @@ class Config {
         ZYK_CUSTOMER => ZYK_SERVICE_SYS,
         ZYK_FINANCE => ZYK_FINANCE_SYS,
         ZYK_PRESALE => ZYK_SERVICE_SYS,
-        ZYK_MANAGE => ZYK_PRODECT_SYS
+        ZYK_MANAGE => ZYK_PRODECT_SYS,
+        ZYK_PRESALE => ZYK_SERVICE_SYS
     ];
-    
+
     /**
      * 角色对应名称
      * @var string[]
@@ -40,8 +41,10 @@ class Config {
         ZYK_FINANCE => '财务',
         ZYK_PRESALE => '售前',
         ZYK_ADMINISTRATOR => '管理员',
-        ZYK_ORGANIZE => '审核机构'
+        ZYK_ORGANIZE => '审核机构',
+        ZYK_MANAGE => '行政人员'
     ];
+
 
     /**
      * 获取配置内容

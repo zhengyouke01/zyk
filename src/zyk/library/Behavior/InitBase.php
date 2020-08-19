@@ -66,10 +66,26 @@ class InitBase{
 
         // 初始化项目系统常量
         $this->initProductConst();
+
+        // 初始化管理员身份级别
+        $this->initAdminItemLevel();
     }
 
     /**
-     * 初始化系统
+     * 初始化用户身份级别
+     * @author wxw 2020/8/19
+     *
+     */
+    private function initAdminItemLevel() {
+        if ($this->tags) {
+            array_walk($this->tags['identity_level'], function ($tag, $key) {
+                defined($tag) or  define($tag, $key) ;
+            });
+        }
+    }
+
+    /**
+     * 初始化系统标识
      * @author wxw 2020/8/18
      *
      */
