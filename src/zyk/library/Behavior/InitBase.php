@@ -81,6 +81,10 @@ class InitBase{
             array_walk($this->tags['identity_level'], function ($tag, $key) {
                 defined($tag) or  define($tag, $key) ;
             });
+            // 后台用户常量的载入
+            array_walk($this->tags['admin_user_info_type'], function ($tag, $key) {
+                defined($tag) or  define($tag, $key) ;
+            });
         }
     }
 
@@ -103,6 +107,7 @@ class InitBase{
      */
     private function initUserRole(){
         if ($this->tags) {
+            // 用户角色常量载入
             array_walk($this->tags['user_roles'], function ($tag, $key) {
                 defined($tag) or  define($tag, $key) ;
             });
