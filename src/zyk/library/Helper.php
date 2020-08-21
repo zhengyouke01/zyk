@@ -61,7 +61,7 @@ function res_client_data($data) {
  * @return mixed
  */
 function res_get_code($data) {
-    return $data['code'];
+    return $data['status'];
 }
 
 
