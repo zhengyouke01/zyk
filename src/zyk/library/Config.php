@@ -9,13 +9,13 @@ class Config {
     protected $sysTags = null;
 
     // 主要角色标记（ 管理员、咨询师、销售等）
-    protected $roleTags = null;
+    protected $userTypeTags = null;
 
     public function __construct() {
         $tags = include __DIR__.'/SysteamTag.php';
         if ($tags) {
             $this->sysTags = $tags['sys_tags'];
-            $this->roleTags = $tags['admin_user_info_type'];
+            $this->userTypeTags = $tags['admin_user_info_type'];
         }
     }
 
