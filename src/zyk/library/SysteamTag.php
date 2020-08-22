@@ -35,5 +35,5 @@ return [
         'admin' => 'ZYK_ADMIN_USER_ADMIN', // 内部后台用户
         'sale' => 'ZYK_ADMIN_USER_SALE', // 销售
         'consult' => 'ZYK_ADMIN_USER_CONSULT' // 咨询师
-    ]
+    ],
 ];

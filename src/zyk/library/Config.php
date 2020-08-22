@@ -8,10 +8,14 @@ class Config {
 
     protected $sysTags = null;
 
+    // 主要角色标记（ 管理员、咨询师、销售等）
+    protected $roleTags = null;
+
     public function __construct() {
         $tags = include __DIR__.'/SysteamTag.php';
         if ($tags) {
             $this->sysTags = $tags['sys_tags'];
+            $this->roleTags = $tags['admin_user_info_type'];
         }
     }
 
@@ -110,5 +114,22 @@ class Config {
             return $data[$field];
         }
         return false;
+    }
+
+    /**
+     * 获取系统对应个的角色
+     * @author wxw 2020/8/22
+     *
+     * @param $sys
+     * @return array
+     */
+    public function getSysRole($sys) {
+        $role = [];
+        array_walk($this->ruleSysLink, function ($ruleSys, $key) use (&$role, $sys) {
+            if ($ruleSys == $sys) {
+                $role[] = $key;
+            }
+        });
+        return $role;
     }
 }
