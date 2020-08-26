@@ -36,4 +36,26 @@ return [
         'sale' => 'ZYK_ADMIN_USER_SALE', // 销售
         'consult' => 'ZYK_ADMIN_USER_CONSULT' // 咨询师
     ],
+    'flow_unit' => [
+        1 => 'FLOW_WAITING_ORDER', // 待接单
+        2 => 'FLOW_IN_SERVICE', // 服务中
+        3 => 'FLOW_FINISH_CERT', // 已出证
+        4 => 'FLOW_FIRST_VISIT', // 首访
+        5 => 'FLOW_CONFIRM_INFO', // 确认资料
+        6 => 'FLOW_RECEIVE_ORDER', // 接单
+        7 => 'FLOW_REJECT_ORDER', // 拒单
+        8 => 'FLOW_UPLOAD_DECLARE_FILE', // 上传申报文件
+        9 => 'FLOW_COMMIT_AGENCY', // 提交机构
+        10 => 'FLOW_PLAN_VERIFY', // 安排审核
+        11 => 'FLOW_ISSUE_CERT', // 出证
+        12 => 'FLOW_IMPROVE_INFO', // 完善资料
+        13 => 'FLOW_CHANGE_APPLICATION', // 修改申请表
+        14 => 'FLOW_PLACE_FILE', // 文件整改归档
+        15 => 'FLOW_COMFIRM_VERIFY', // 确认审核安排
+        16 => 'FLOW_VERIFY_COMMUNICATE', // 确认审核沟通
+        17 => 'FLOW_COMFIRM_FILE', // 确认档案袋
+        18 => 'FLOW_UPLOAD_CERT', // 上传电子正式
+        19 => 'FLOW_MAIL_CERT', // 邮寄证书
+        20 => 'FLOW_RECEIVE_CERT', //领取证书原件
+    ]
 ];

@@ -98,6 +98,9 @@ class InitBase{
             array_walk($this->tags['sys_tags'], function ($tag, $key) {
                 defined($tag) or  define($tag, $key) ;
             });
+            array_walk($this->tags['flow_unit'], function ($tag, $key) {
+                defined($tag) or  define($tag, $key) ;
+            });
         }
 
     }

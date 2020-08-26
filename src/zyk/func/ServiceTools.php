@@ -63,3 +63,16 @@ function zyk_check_mobile(string $mobile) {
 }
 
 
+/**
+ * 今日的开始结束时间
+ *
+ * @author wxw 2020/2/4
+ *
+ */
+function zyk_todayTime() {
+    $stime = mktime(0,0,0,date('m'),date('d'),date('Y'));
+    $etime = mktime(0,0,0,date('m'),date('d')+1,date('Y'))-1;
+    return ['start_time' => $stime, 'end_time' => $etime];
+}
+
+
