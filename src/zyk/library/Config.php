@@ -47,7 +47,8 @@ class Config {
         ZYK_PRESALE => '售前',
         ZYK_ADMINISTRATOR => '管理员',
         ZYK_ORGANIZE => '审核机构',
-        ZYK_MANAGE => '行政人员'
+        ZYK_MANAGE => '行政人员',
+        ZYK_PROJECT_ASSISTANT => '项目助理'
     ];
 
     /**
@@ -60,6 +61,17 @@ class Config {
         ZYK_LEVEL_PERSONNEL => '一般员工',
     ];
 
+    /**
+     * 系统标识对应的名称
+     * @var string[]
+     */
+    protected $sysName = [
+        ZYK_SUPPLY_SYS => '供应链系统',
+        ZYK_PRODECT_SYS => '项目系统',
+        ZYK_SERVICE_SYS => '服务系统',
+        ZYK_FINANCE_SYS => '财务系统',
+        ZYK_OPERATION_SYS => '运维系统'
+    ];
 
     /**
      * 获取配置内容
