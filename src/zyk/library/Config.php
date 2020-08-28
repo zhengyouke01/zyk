@@ -73,6 +73,23 @@ class Config {
         ZYK_OPERATION_SYS => '运维系统'
     ];
 
+
+    /**
+     * 角色对应用户表
+     * @var array
+     */
+    protected $roleTabelName = [
+        ZYK_SALE => ZYK_ADMIN_USER_SALE,
+        ZYK_CONSULT => ZYK_ADMIN_USER_CONSULT,
+        ZYK_CUSTOMER => ZYK_ADMIN_USER_ADMIN,
+        ZYK_DECLARE => ZYK_ADMIN_USER_ADMIN,
+        ZYK_FINANCE => ZYK_ADMIN_USER_ADMIN,
+        ZYK_PRESALE => ZYK_ADMIN_USER_ADMIN,
+        ZYK_ADMINISTRATOR => ZYK_ADMIN_USER_ADMIN,
+        ZYK_ORGANIZE => ZYK_ADMIN_USER_ADMIN,
+        ZYK_MANAGE => ZYK_ADMIN_USER_ADMIN
+    ];
+
     /**
      * 获取配置内容
      * @author wxw 2020/8/18
