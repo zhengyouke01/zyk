@@ -5,7 +5,9 @@
     "homepage": "https://github.com/zhengyouke01/zyk",
     "license": "MIT",
     "require": {
-        "php": ">=7.0"
+        "php": ">=7.0",
+        "qiniu/php-sdk": "^7.2",
+        "firebase/php-jwt": "^5.2"
     },
     "autoload" : {
         "files": [
