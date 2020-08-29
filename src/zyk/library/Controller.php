@@ -51,8 +51,8 @@ class Controller {
         $this->initialize();
         // 预制配置类载入
         $this->zykConfig = $config;
-        // 注册登陆验证的方法 todo
-        $this->auth();
+        // 注册登陆验证的方法(废弃，使用中间价配合路由进行权限验证）
+//        $this->auth();
 
         // 前置操作方法 即将废弃 沿用Tp的
         foreach ((array) $this->beforeActionList as $method => $options) {

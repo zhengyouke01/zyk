@@ -33,3 +33,22 @@ return [
 'exception_handle'  => '\\zyk\\library\\Exception\\Http'
 ```
 
+middleware.php  
+添加中间价配置，用于验证权限 
+```php
+    'Auth' => 'app\\api\\middleware\\Auth'
+```
+
+
+##### 一些通用的使用是方式
+
+* 获取登陆用户的信息
+  
+使用容器类获取用户信息的存储
+```php
+app(AuthUser::class);
+
+// 如 读取用户权限
+app(AuthUser::class)->getRoles();
+```
+
