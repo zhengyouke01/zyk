@@ -32,7 +32,8 @@ return [
     ],
     // 后台用户类型表识
     'admin_user_info_type' => [
-        'admin' => 'ZYK_ADMIN_USER_ADMIN', // 内部后台用户
+        'super_admin' => 'ZYK_ADMIN_SUPER_ADMIN', // 超级管理员
+        'admin' => 'ZYK_ADMIN_USER_ADMIN', // pc用户
         'sale' => 'ZYK_ADMIN_USER_SALE', // 销售
         'consult' => 'ZYK_ADMIN_USER_CONSULT' // 咨询师
     ],
