@@ -31,6 +31,16 @@ if (!function_exists('redis')) {
     }
 }
 
+// 返回gearman连接类
+if (!function_exists('gearman')) {
+    function gearman() {
+        $gmc = new GearmanClient();
+        $gmc->addServer();
+        return $gmc;
+    }
+}
+
+
 /**
  * 获取统一返回的状态码
  * @author wxw 2019/12/12
