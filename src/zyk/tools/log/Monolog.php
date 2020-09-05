@@ -9,25 +9,7 @@ use zyk\tools\BaseInterface;
 
 class Monolog implements BaseInterface {
 
-    private static $logPath = '../log/';
-    private static $instance = [];
-
-    public function __construct(array $option = []) {
-        self::$logPath = $option['monolog_path'] ?? self::$logPath;
-    }
-
-    /**
-     * @param array $option
-     */
-    public static function getInstance(array $option = []) {
-        self::$logPath = $option['monolog_path'] ?? self::$logPath;
-        $k = md5(self::$logPath);
-        if( !isset(static::$instance[$k]) || !(static::$instance[$k] instanceof self)) {
-            static::$instance[$k] = new self($option);
-            static::$instance[$k]->k = $k;
-        }
-        return static::$instance[$k];
-    }
+    protected static $logPath = APP_PATH. '/../runtime/Mlogs/';
 
     public function serviceInfo() {
         return ['service_name' => 'Mongolog记录类', 'service_class' => 'Monolog', 'service_describe' => 'Mongolog记录类', 'author' => 'wxw', 'version' => '1.0'];
@@ -43,8 +25,8 @@ class Monolog implements BaseInterface {
      * @param string $params
      * @param string $module
      */
-    public function info(string $name, string $msg, string $ip, array $params = [], string $module = '') {
-        $this->setLog($name)->info(self::processMsg($msg, $ip, $params, $module));
+    static public function info($name, $msg, $ip, $params = [], $module = '') {
+        self::setLog($name)->info(self::processMsg($msg, $ip, $params, $module));
     }
 
     /**
@@ -57,8 +39,8 @@ class Monolog implements BaseInterface {
      * @param string $params
      * @param string $module
      */
-    public function warning(string $name, string $msg, string $ip, array $params = [], string $module = '') {
-        $this->setLog($name)->warning(self::processMsg($msg, $ip, $params, $module));
+    static public function warning($name, $msg, $ip, $params = [], $module = '') {
+        self::setLog($name)->warning(self::processMsg($msg, $ip, $params, $module));
     }
 
     /**
@@ -71,8 +53,8 @@ class Monolog implements BaseInterface {
      * @param string $params
      * @param string $module
      */
-    public function error(string $name, string $msg, string $ip, array $params = [], string $module = '') {
-        $this->setLog($name)->error(self::processMsg($msg, $ip, $params, $module));
+    static public function error($name, $msg, $ip, $params = [], $module = '') {
+        self::setLog($name)->error(self::processMsg($msg, $ip, $params, $module));
     }
 
 
@@ -86,7 +68,7 @@ class Monolog implements BaseInterface {
      * @param string $module
      * @return string
      */
-    static public function processMsg(string $msg, string $ip, array $params = [], string $module = '') {
+    static public function processMsg($msg, $ip, $params = [], $module = '') {
         $module = empty($module)?"[]":"[$module]";
         $ip = empty($ip)?"[]":$ip;
         $paramStr = '';
@@ -109,23 +91,18 @@ class Monolog implements BaseInterface {
      * @param $name
      * @return bool|Logger
      */
-    public function setLog(string $name, string $module = '') {
+    static public function setLog($name, $module = '') {
         $logger = new Logger($name);
-        if (!is_dir(static::$logPath)) {
-            if (mkdir(static::$logPath, 0777, true) === false) {
+        if (!empty(config('monolog_path'))) {
+            self::$logPath = config('monolog_path');
+        }
+        $logPath = self::$logPath;
+        if (!is_dir($logPath)) {
+            if (mkdir($logPath, 0777, true) === false) {
                 return false;
             }
         }
-        // 根据模块区分目录的
-        if (empty($module)) {
-            if (defined('BIND_MODULE')) {
-                $module = BIND_MODULE;
-            } else {
-                // 默认使用default目录
-                $module = 'default';
-            }
-        }
-        $logFileName = static::$logPath.$module.DIRECTORY_SEPARATOR.$name.'.log';
+        $logFileName = $logPath.DIRECTORY_SEPARATOR.$name.'.log';
         $handler = new StreamHandler($logFileName, Logger::INFO);
         // 自定义格式
         $output = "[%datetime%]\t%level_name%\t%message%\t%context%\t%extra%\n";

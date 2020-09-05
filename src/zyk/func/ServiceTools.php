@@ -76,3 +76,17 @@ function zyk_todayTime() {
 }
 
 
+/**
+ * 获取制定时间的月开始和结束时间
+ *
+ * @author wxw 2020/1/11
+ *
+ * @param $time
+ *
+ * @return array
+ */
+function zyk_monthTime($time) {
+    $stime = mktime(0, 0, 0, date('m', $time), 1, date('Y', $time));
+    $etime = mktime(23, 59, 59, date('m', $time), date('t', $time), date('Y', $time));
+    return ['start_time' => $stime, 'end_time' => $etime];
+}
