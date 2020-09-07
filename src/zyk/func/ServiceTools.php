@@ -70,8 +70,8 @@ function zyk_check_mobile(string $mobile) {
  *
  */
 function zyk_todayTime() {
-    $stime = mktime(0,0,0,date('m'),date('d'),date('Y'));
-    $etime = mktime(0,0,0,date('m'),date('d')+1,date('Y'))-1;
+    $stime = mktime(0,0,0,intval(date('m')),intval(date('d')),intval(date('Y')));
+    $etime = mktime(0,0,0,intval(date('m')),intval(date('d'))+1,intval(date('Y')))-1;
     return ['start_time' => $stime, 'end_time' => $etime];
 }
 
@@ -86,7 +86,7 @@ function zyk_todayTime() {
  * @return array
  */
 function zyk_monthTime($time) {
-    $stime = mktime(0, 0, 0, date('m', $time), 1, date('Y', $time));
-    $etime = mktime(23, 59, 59, date('m', $time), date('t', $time), date('Y', $time));
+    $stime = mktime(0, 0, 0, intval(date('m', $time)), 1,  intval(date('Y', $time)));
+    $etime = mktime(23, 59, 59, intval(date('m', $time)),  intval(date('t', $time)),  intval(date('Y', $time)));
     return ['start_time' => $stime, 'end_time' => $etime];
 }
