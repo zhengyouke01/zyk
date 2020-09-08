@@ -8,7 +8,8 @@
         "php": ">=7.0",
         "qiniu/php-sdk": "^7.2",
         "firebase/php-jwt": "^5.2",
-        "jpush/jpush": "^3.6"
+        "jpush/jpush": "^3.6",
+        "elasticsearch/elasticsearch": "^6.7"
     },
     "autoload" : {
         "files": [

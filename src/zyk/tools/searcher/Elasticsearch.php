@@ -6,7 +6,7 @@ namespace zyk\tools\searcher;
 use Elasticsearch\ClientBuilder;
 use zyk\tools\BaseInterface;
 
-class Elasticsearch extends ServiceBase implements BaseInterface {
+class Elasticsearch implements BaseInterface {
 
     private $client = null;
 
