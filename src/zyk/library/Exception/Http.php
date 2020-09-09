@@ -49,12 +49,12 @@ class Http extends Handle {
             // 检查错误级别
             if (in_array($e->getSeverity(),  [E_NOTICE, E_WARNING, E_USER_NOTICE, E_USER_WARNING])) {
                 // notice和warning的处理
-//                Monolog::warning('wnError', '错误信息:'.$e->getMessage(). '， 错误位置：'.$e->getFile().'，line：'.$e->getLine().'，error_str: '.$e->getTraceAsString(), '', [], $this->errorStr[$e->getSeverity()]);
+                Monolog::warning('wnError', '错误信息:'.$e->getMessage(). '， 错误位置：'.$e->getFile().'，line：'.$e->getLine().'，error_str: '.$e->getTraceAsString(), '', [], $this->errorStr[$e->getSeverity()]);
             } else {
-//                Monolog::error('wnError', '错误信息:'.$e->getMessage(). '， 错误位置：'.$e->getFile().'，line：'.$e->getLine().'，error_str: '.$e->getTraceAsString(), '', [], 'ERROR');
+                Monolog::error('wnError', '错误信息:'.$e->getMessage(). '， 错误位置：'.$e->getFile().'，line：'.$e->getLine().'，error_str: '.$e->getTraceAsString(), '', [], 'ERROR');
             }
         } else {
-//            Monolog::error('wnError', '错误信息:'.$e->getMessage(). '， 错误位置：'.$e->getFile().'，line：'.$e->getLine().'，error_str: '.$e->getTraceAsString(), '', [], 'ERROR');
+            Monolog::error('wnError', '错误信息:'.$e->getMessage(). '， 错误位置：'.$e->getFile().'，line：'.$e->getLine().'，error_str: '.$e->getTraceAsString(), '', [], 'ERROR');
         }
         // 错误返回
         if(config('app_debug')){
