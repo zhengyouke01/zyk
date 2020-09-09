@@ -112,7 +112,7 @@ class Jgpush {
                     ),
                 ))
                 ->options(array(
-                    'apns_production' => config('jpush.apns_production'),
+                    'apns_production' => config('app.jpush.apns_production'),
                 ))
                 ->setSmsMessage(array(
                     'delay_time' => 3600,
@@ -184,7 +184,7 @@ class Jgpush {
                     ),
                 ))
                 ->options(array(
-                    'apns_production' => config('jpush.apns_production'),
+                    'apns_production' => config('app.jpush.apns_production'),
                 ))
                 ->setSmsMessage(array(
                     'delay_time' => 3600,
