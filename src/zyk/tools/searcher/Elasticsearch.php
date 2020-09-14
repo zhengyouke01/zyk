@@ -72,7 +72,7 @@ class Elasticsearch implements BaseInterface {
      * @param array $data
      * @return array
      */
-    public function deleteByQuery(string $index, array $data = []) {
+    public function deleteByQuery($index, array $data = []) {
         $params = [
             'index' => $index,
             'type' => '_doc',
