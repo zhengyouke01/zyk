@@ -9,7 +9,8 @@
         "qiniu/php-sdk": "^7.2",
         "firebase/php-jwt": "^5.2",
         "jpush/jpush": "^3.6",
-        "elasticsearch/elasticsearch": "^6.7"
+        "elasticsearch/elasticsearch": "^6.7",
+        "monolog/monolog": "^2.1"
     },
     "autoload" : {
         "files": [
