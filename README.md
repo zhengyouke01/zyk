@@ -4,6 +4,7 @@
 ##### 框架使用的相关配置（TP5.1）
 
 项目目录下tags.php 配置示例
+
 ```php
 <?php
 
@@ -24,7 +25,6 @@ return [
     // 应用结束
     'app_end'      => [],
 ];
-
 ```
 
 项目配置文件配置：
@@ -35,8 +35,11 @@ return [
 
 middleware.php  
 添加中间价配置，用于验证权限 
+
 ```php
-    'Auth' => 'app\\api\\middleware\\Auth'
+    'Auth' => 'app\\api\\middleware\\Auth',
+    'Permit' => 'zyk\\library\\Middleware\\Permit'
+
 ```
 
 
@@ -45,6 +48,7 @@ middleware.php
 * 获取登陆用户的信息
   
 使用容器类获取用户信息的存储
+
 ```php
 app(AuthUser::class);
 
