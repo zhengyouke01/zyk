@@ -7,9 +7,19 @@ namespace zyk\library\Middleware;
 use zyk\library\Auth\AuthUser;
 use zyk\library\traits\Jump;
 
-class Permit
+abstract class Permit
 {
     use Jump;
+
+    /**
+     * 特殊的权限判断
+     * @author wxw 2020/9/15
+     *
+     * @param $rule
+     * @param $rules
+     * @return mixed
+     */
+    abstract function specialRulesCheck($rule, $rules);
 
     public function handle($request, \Closure $next) {
         if (ROLE_TYPE == ZYK_ADMINISTRATOR) {
@@ -25,7 +35,10 @@ class Permit
         $checkRules = $this->checkRoute($route['rule'], $rules);
         if (!$checkRules) {
             // 特殊情况处理（扩展）
-            $this->jump(RESULT_ERROR, '无权操作');
+            $res = $this->specialRulesCheck($route['rule'], $rules);
+            if (!$res) {
+                $this->jump(RESULT_ERROR, '无权操作');
+            }
         }
         return $next($request);
     }
