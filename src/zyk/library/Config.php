@@ -31,7 +31,8 @@ class Config {
         ZYK_PRESALE => ZYK_SERVICE_SYS,
         ZYK_MANAGE => ZYK_PRODECT_SYS,
         ZYK_PRESALE => ZYK_SERVICE_SYS,
-        ZYK_PROJECT_ASSISTANT => ZYK_SUPPLY_SYS
+        ZYK_PROJECT_ASSISTANT => ZYK_SUPPLY_SYS,
+        ZYK_RISK => ZYK_SUPPLY_SYS
     ];
 
     /**
@@ -48,7 +49,8 @@ class Config {
         ZYK_ADMINISTRATOR => '管理员',
         ZYK_ORGANIZE => '审核机构',
         ZYK_MANAGE => '行政人员',
-        ZYK_PROJECT_ASSISTANT => '项目助理'
+        ZYK_PROJECT_ASSISTANT => '项目助理',
+        ZYK_RISK => '风控人员'
     ];
 
     /**
@@ -87,7 +89,8 @@ class Config {
         ZYK_PRESALE => ZYK_ADMIN_USER_ADMIN,
         ZYK_ADMINISTRATOR => ZYK_ADMIN_USER_ADMIN,
         ZYK_ORGANIZE => ZYK_ADMIN_USER_ADMIN,
-        ZYK_MANAGE => ZYK_ADMIN_USER_ADMIN
+        ZYK_MANAGE => ZYK_ADMIN_USER_ADMIN,
+        ZYK_RISK => ZYK_ADMIN_USER_ADMIN,
     ];
 
     /**
