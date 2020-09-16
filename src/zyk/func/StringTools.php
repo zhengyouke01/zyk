@@ -154,7 +154,7 @@ function zyk_upper_number(int $number) {
     if (!is_numeric($number)) return false;
     $numfont = array('0' => '零', '1' => '一', '2' => '二', '3' => '三', '4' => '四', '5' => '五', '6' => '六', '7' => '七', '8' => '八', '9' => '九');
     $upper = '';
-    for ($i = 1; $i <= strlen($number); $i++) {
+    for ($i = 1; $i <= strlen((string)$number); $i++) {
         $key = $i - 1;
         $key = mb_substr((string)$number, $key, 1);
         $upper .= $numfont[$key];
