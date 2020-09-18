@@ -59,5 +59,6 @@ return [
         18 => 'FLOW_UPLOAD_CERT', // 上传电子正式
         19 => 'FLOW_MAIL_CERT', // 邮寄证书
         20 => 'FLOW_RECEIVE_CERT', //领取证书原件
+        21 => 'FLOW_BEOVER' // 完结
     ]
 ];
