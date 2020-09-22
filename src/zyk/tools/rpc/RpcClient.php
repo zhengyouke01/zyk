@@ -4,12 +4,14 @@
 namespace zyk\tools\rpc;
 
 use Swoole\Client;
+use think\facade\Env;
 use zyk\tools\BaseInterface;
 
 class RpcClient implements BaseInterface {
 
     protected $port = 9099;
     protected $host = '127.0.0.1';
+    protected $timeout = 3;
     protected $options = [
         'open_length_check'     => 1,
         'package_length_type'   => 'N',
@@ -26,9 +28,28 @@ class RpcClient implements BaseInterface {
     public function __construct($host = null, $port = null) {
         if (!empty($port)) {
             $this->port = $port;
+        } else {
+            $envPort = Env::get('rpc_server.port');
+            empty($envPort)? '': $this->port = $envPort;
         }
         if (!empty($host)) {
             $this->host = $host;
+        } else {
+            $envHost = Env::get('rpc_server.host');
+            empty($envHost)? '': $this->port = $envPort;
+        }
+        $this->setTimeout();
+    }
+
+    /**
+     * 设置超时时间
+     * @author wxw 2020/9/22
+     *
+     */
+    private function setTimeout() {
+        $timeoutEnv = Env::get('rpc_server.timeout');
+        if (!empty($timeoutEnv)) {
+            $this->timeout = $timeoutEnv;
         }
     }
 
@@ -45,7 +66,7 @@ class RpcClient implements BaseInterface {
         $a = null;
         $res = null;
         $client = new Client(SWOOLE_SOCK_TCP);
-        $client->connect($this->host, $this->port, 0.5);
+        $client->connect($this->host, $this->port, $this->timeout);
         $client->set($options);
         $client->send(json_encode($data));
         $res = $client->recv();
