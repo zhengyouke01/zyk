@@ -68,11 +68,11 @@ class Config {
      * @var string[]
      */
     protected $sysName = [
-        ZYK_SUPPLY_SYS => '供应链系统',
-        ZYK_PRODECT_SYS => '项目系统',
-        ZYK_SERVICE_SYS => '服务系统',
-        ZYK_FINANCE_SYS => '财务系统',
-        ZYK_OPERATION_SYS => '运维系统'
+        ZYK_SUPPLY_SYS => '供应链管理系统',
+        ZYK_PRODECT_SYS => '交付管理系统',
+        ZYK_SERVICE_SYS => '商务管理系统',
+        ZYK_FINANCE_SYS => '财务结算系统',
+        ZYK_OPERATION_SYS => '运维监控管理系统'
     ];
 
 
