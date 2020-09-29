@@ -23,7 +23,8 @@ return [
         10 => 'ZYK_PRESALE', // 售前
         11 => 'ZYK_MANAGE', // 行政人员
         12 => 'ZYK_PROJECT_ASSISTANT', // 项目助理
-        13 => 'ZYK_RISK' // 风控角色
+        13 => 'ZYK_RISK', // 风控角色
+        13 => 'ZYK_OPERATION' // 运维人员
     ],
     // 身份等级标识
     'identity_level' => [
