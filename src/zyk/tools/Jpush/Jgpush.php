@@ -18,7 +18,7 @@ class Jgpush {
      */
     static public function setAlias($jpushId,$alias) {
         try {
-            $client = new JPush(config('app.jpush.key'), config('app.jpush.secret'));
+            $client = new JPush(config('app.jpush.key'), config('app.jpush.secret'), config('app.jpush.log_path'));
             $device = $client->device();
             // 查询指定设备的别名与标签
             $device->getDevices($jpushId);
@@ -37,7 +37,7 @@ class Jgpush {
      * @return bool
      */
     static public function delAlias($alias) {
-        $client = new JPush(config('app.jpush.key'), config('app.jpush.secret'));
+        $client = new JPush(config('app.jpush.key'), config('app.jpush.secret'), config('app.jpush.log_path'));
         $device = $client->device();
         // 删除别名
         $device->deleteAlias($alias);
@@ -51,7 +51,7 @@ class Jgpush {
      * @return bool|array|mixed
      */
     static public function getAliasDevices($alias) {
-        $client = new JPush(config('app.jpush.key'), config('app.jpush.secret'));
+        $client = new JPush(config('app.jpush.key'), config('app.jpush.secret'), config('app.jpush.log_path'));
         $device = $client->device();
         // 获取指定别名下的设备
         return  $device->getAliasDevices($alias);
@@ -65,7 +65,7 @@ class Jgpush {
      */
     static public function getDevices($jpushId) {
         try {
-            $client = new JPush(config('app.jpush.key'), config('app.jpush.secret'));
+            $client = new JPush(config('app.jpush.key'), config('app.jpush.secret'), config('app.jpush.log_path'));
             $device = $client->device();
             // 查询指定设备的别名与标签
             $res = $device->getDevices($jpushId);
@@ -86,7 +86,7 @@ class Jgpush {
      * @return mixed
      */
     static public function pushAll($type='all',$msg,$title,$url) {
-        $client = new JPush(config('app.jpush.key'), config('app.jpush.secret'));
+        $client = new JPush(config('app.jpush.key'), config('app.jpush.secret'), config('app.jpush.log_path'));
         try {
             $res = $client->push()
                 ->setPlatform($type)
@@ -149,7 +149,7 @@ class Jgpush {
      */
     static public function pushAlias($alias, $msg, $title, $url, $ext = [], $num = 0) {
 
-        $client = new JPush(config('app.jpush.key'), config('app.jpush.secret'));
+        $client = new JPush(config('app.jpush.key'), config('app.jpush.secret'), config('app.jpush.log_path'));
         try {
             $alert = ['title' => $title, 'body' => $msg];
             $res= $client->push()
