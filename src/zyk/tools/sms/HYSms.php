@@ -54,7 +54,7 @@ class HYSms implements BaseInterface {
             $gets =  $this->xml_to_array($this->Post($post_data, $target));
             if($gets['SubmitResult']['code']==2){
                 /*发送成功，记录短信内容*/
-                $this->log_sms($mobile,$msg);
+                //$this->log_sms($mobile,$msg);
                 $res['success'] = true;
                 $res['msg'] = "发送成功";
                 return $res;
