@@ -11,9 +11,9 @@ class HYSms implements BaseInterface {
 
 
     private function __construct(array $option = []) {
-        $this->account = config('sms.account');       //用户账号 C71283268
-        $this->password = config('sms.password');     //密码  d951ff7a59e7474e9244eb9de915c327
-        $this->target = config('sms.target');       //提交地址
+        $this->account = config('app.sms.account');       //用户账号 C71283268
+        $this->password = config('app.sms.password');     //密码  d951ff7a59e7474e9244eb9de915c327
+        $this->target = config('app.sms.target');       //提交地址
     }
 
     //私有化克隆
@@ -44,7 +44,7 @@ class HYSms implements BaseInterface {
      * @param string $content 短信内容
      * @return mixed
      */
-    public function sendSMS(string $mobile, string $content){
+    public function sendSMS($mobile, $content){
         $target = $this->target;
         $msg = $content;
         try {
@@ -71,7 +71,7 @@ class HYSms implements BaseInterface {
 
     }
 
-    public function Post(string $curlPost, string $url) {
+    public function Post($curlPost, $url) {
             $curl = curl_init();
             curl_setopt($curl, CURLOPT_URL, $url);
             curl_setopt($curl, CURLOPT_HEADER, false);
@@ -84,7 +84,7 @@ class HYSms implements BaseInterface {
             return $return_str;
     }
 
-    public function xml_to_array(string $xml) {
+    public function xml_to_array($xml) {
         $reg = "/<(\w+)[^>]*>([\\x00-\\xFF]*)<\\/\\1>/";
         if(preg_match_all($reg, $xml, $matches)){
             $count = count($matches[0]);
