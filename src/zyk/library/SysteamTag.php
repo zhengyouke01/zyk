@@ -24,7 +24,8 @@ return [
         11 => 'ZYK_MANAGE', // 行政人员
         12 => 'ZYK_PROJECT_ASSISTANT', // 项目助理
         13 => 'ZYK_RISK', // 风控角色
-        14 => 'ZYK_OPERATION' // 运维人员
+        14 => 'ZYK_OPERATION', // 运维人员
+        15 => 'ZYK_RENEW', // 续签
     ],
     // 身份等级标识
     'identity_level' => [
