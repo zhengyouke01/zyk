@@ -43,17 +43,17 @@ class Config {
      */
     protected $roleName = [
         ZYK_SALE => '销售',
-        ZYK_CONSULT => '咨询师',
-        ZYK_CUSTOMER => '客服',
+        ZYK_CONSULT => '咨询',
+        ZYK_CUSTOMER => '商务',
         ZYK_DECLARE => '申报',
         ZYK_FINANCE => '财务',
         ZYK_PRESALE => '售前',
         ZYK_ADMINISTRATOR => '管理员',
         ZYK_ORGANIZE => '审核机构',
-        ZYK_MANAGE => '行政人员',
-        ZYK_PROJECT_ASSISTANT => '项目助理',
-        ZYK_RISK => '风控人员',
-        ZYK_OPERATION => '运维人员',
+        ZYK_MANAGE => '行政',
+        ZYK_PROJECT_ASSISTANT => '助理',
+        ZYK_RISK => '风控',
+        ZYK_OPERATION => '运维',
         ZYK_RENEW => '续签'
     ];
 

@@ -8,6 +8,7 @@ return [
         3 => 'ZYK_SERVICE_SYS',  // 服务系统
         4 => 'ZYK_FINANCE_SYS',  // 财务系统
         5 => 'ZYK_OPERATION_SYS',  // 运维系统
+        6 => 'ZYK_TASK_SYS' // 工单系统
     ],
     // 所有用户身份标识
     'user_roles' => [
