@@ -569,5 +569,25 @@ class Qiniu implements BaseInterface {
         return $client->json();
     }
 
-
+    /**
+     * 获取带图片水印的缩略图的链接（铺满整个图片）
+     * @param $fkey 图片文件key
+     * @param $watermark 水印图片key
+     * @param $gravity 指定水印位置
+     * @param $type 缩略图类型
+     * @param int $width 缩略图宽
+     * @param int $height 缩略图高
+     * @param $imgwidth 图片文件的宽
+     * @param $imgheight 图片文件的高
+     * @return string 展示链接
+     * @author zjq 2012-12-30
+     */
+    public function getWatermarkImageThumbUrlZYK($fkey, $watermark, $gravity, $type, $width = 0, $height = 0) {
+        $ws = 1;
+        $image = $this->downloadUrl(1, $watermark);
+        $water = 'watermark/1/image/' . $this->base64UrlSafeEncode($image) . '/dissolve/100/gravity/' . $gravity . '/ws/' . $ws . "/wst/1";
+        $image = '/' . $type . '/w/' . $width . '/h/' . $height;
+        $url = config('app.qiniu.file_upload_domain') . $fkey . '?' . $water . $image;
+        return $this->getAuthorization($url);
+    }
 }
