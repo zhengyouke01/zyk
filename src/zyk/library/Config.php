@@ -76,7 +76,8 @@ class Config {
         ZYK_PRODECT_SYS => '交付管理系统',
         ZYK_SERVICE_SYS => '商务管理系统',
         ZYK_FINANCE_SYS => '财务结算系统',
-        ZYK_OPERATION_SYS => '运维监控管理系统'
+        ZYK_OPERATION_SYS => '运维监控管理系统',
+        ZYK_TASK_SYS => '工单系统',
     ];
 
 
