@@ -68,7 +68,8 @@ class RpcClient implements BaseInterface {
         $client = new Client(SWOOLE_SOCK_TCP);
         $client->connect($this->host, $this->port, $this->timeout);
         $client->set($options);
-        $client->send(json_encode($data));
+        $sendDate = json_encode($data);
+        $client->send(pack('N', strlen($sendDate)).$sendDate);
         $res = $client->recv();
         $client->close();
         return $res;
