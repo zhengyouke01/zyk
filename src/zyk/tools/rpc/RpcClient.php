@@ -13,7 +13,7 @@ class RpcClient implements BaseInterface {
     protected $host = '127.0.0.1';
     protected $timeout = 3;
     protected $options = [
-        'open_length_check'     => 1,
+        'open_length_check'     => true,
         'package_length_type'   => 'N',
         'package_length_offset' => 0, //第N个字节是包长度的值
         'package_body_offset'   => 4, //第几个字节开始计算长度
@@ -63,17 +63,21 @@ class RpcClient implements BaseInterface {
      */
     public function send($data) {
         $options = $this->options;
-        $a = null;
-        $res = null;
         $client = new Client(SWOOLE_SOCK_TCP);
-        $client->connect($this->host, $this->port, $this->timeout);
         $client->set($options);
+        $client->connect($this->host, $this->port, $this->timeout);
         $sendDate = json_encode($data);
         $client->send(pack('N', strlen($sendDate)).$sendDate);
         $res = $client->recv();
+        if (isset($options['open_length_check']) && $options['open_length_check'] === true) {
+            // 开启包长度检测后，需要从制定包场那边开始读取
+            $packageLen  = $options['package_body_offset'] ?? 2;
+            $res = substr($res, $packageLen);
+        }
         $client->close();
         return $res;
     }
+
 
     /**
      * 进行远程调用
