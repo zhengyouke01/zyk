@@ -27,6 +27,8 @@ return [
         13 => 'ZYK_RISK', // 风控角色
         14 => 'ZYK_OPERATION', // 运维人员
         15 => 'ZYK_RENEW', // 续签
+        16 => 'ZYK_ASK', // 订单问询
+        17 => 'ZYK_EDIT', // 订单修改员
     ],
     // 身份等级标识
     'identity_level' => [
