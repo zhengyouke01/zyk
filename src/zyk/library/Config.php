@@ -54,7 +54,10 @@ class Config {
         ZYK_PROJECT_ASSISTANT => '助理',
         ZYK_RISK => '风控',
         ZYK_OPERATION => '运维',
-        ZYK_RENEW => '续签'
+        ZYK_RENEW => '续签',
+        ZYK_ASK => '问询',
+        ZYK_EDIT => '修改员',
+
     ];
 
     /**
