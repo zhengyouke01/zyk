@@ -118,3 +118,37 @@ function res_get_data($data) {
     return $data['data'];
 }
 
+/**
+ * 日志用户信息处理，组合需要的格式
+ * @author wxw 2021/3/29
+ *
+ * @param $userInfo
+ * @return array
+ */
+function logUserInfo($userInfo) {
+    $logUserInfo = [
+        'uid' => defined("UID")? UID:0,
+        'usertype' => defined("USER_TYPE") ? USER_TYPE: '',
+        'username' =>  $userInfo['nickname'] ?? '',
+        'account' => $userInfo['username'] ?? '',
+    ];
+    if (defined("USER_TYPE") &&  defined("ZYK_ADMIN_SUPER_ADMIN") && USER_TYPE == ZYK_ADMIN_SUPER_ADMIN) {
+        $logUserInfo['uid'] = $userInfo['account_id'] ?? -1;
+    }
+    return $logUserInfo;
+}
+
+if (!function_exists('zykLog')) {
+    /**
+     * @author wxw 2021/4/10
+     *
+     * @param string $msg 日志记录的信息
+     * @param string $level 日志等级，目前可以记录info 、error 、warning。默认info
+     * @param array $user 操作人信息。需要记录的操作人信息，最后按json格式存入日志内容中，默认为当前登陆用户的用户信息，如果未登录，存储空
+     * @param string $uri 操作地址、参数。默认为请求方式、url和body。如果非请求，默认空
+     * @param string $ip 操作者（客户端）ip
+     */
+    function zykLog($msg, $level = 'INFO', $user = [], $uri = '', $ip = '') {
+        \zyk\library\Log\Log::record($msg, $level, $user, $uri, $ip);
+    }
+}
