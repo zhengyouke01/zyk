@@ -49,22 +49,22 @@ class Http extends Handle {
             // 检查错误级别
             if (in_array($e->getSeverity(),  [E_NOTICE, E_WARNING, E_USER_NOTICE, E_USER_WARNING])) {
                 // notice和warning的处理
-//                Monolog::warning('wnError', '错误信息:'.$e->getMessage(). '， 错误位置：'.$e->getFile().'，line：'.$e->getLine().'，error_str: '.$e->getTraceAsString(), '', [], $this->errorStr[$e->getSeverity()]);
+                $msg = '错误信息:'.$e->getMessage(). '， 错误位置：'.$e->getFile().'，行：'.$e->getLine().'，详细错误: '.$e->getTraceAsString();
+                zykLog($msg, 'warning');
             } else {
-//                Monolog::error('wnError', '错误信息:'.$e->getMessage(). '， 错误位置：'.$e->getFile().'，line：'.$e->getLine().'，error_str: '.$e->getTraceAsString(), '', [], 'ERROR');
+                $msg = '错误信息:'.$e->getMessage(). '， 错误位置：'.$e->getFile().'，行：'.$e->getLine().'，详细错误: '.$e->getTraceAsString();
+                zykLog($msg, 'error');
             }
         } else {
-//            Monolog::error('wnError', '错误信息:'.$e->getMessage(). '， 错误位置：'.$e->getFile().'，line：'.$e->getLine().'，error_str: '.$e->getTraceAsString(), '', [], 'ERROR');
+            $msg = '错误信息:'.$e->getMessage(). '， 错误位置：'.$e->getFile().'，行：'.$e->getLine().'，详细错误: '.$e->getTraceAsString();
+            zykLog($msg, 'error');
         }
         // 错误返回
         if(config('app_debug')){
             //如果是开发模式
-//            return $this->error($e->getMessage(), ['msg'=>$message]);
             return json(['code'=>$e->getCode(),'msg'=>$e->getMessage(),'data'=>['msg'=>$message]]);
         }else{
             //如果是生产模式,则返回与设定好的未知错误的json
-//            return $this->error($this->msg, ['msg'=>$this->msg]);
-//
             return json(['code'=>$e->getCode(),'msg'=>$this->msg,'data'=>['msg'=>$this->msg]]);
         }
     }

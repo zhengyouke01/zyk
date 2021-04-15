@@ -16,19 +16,6 @@ class Monolog implements ZykLogInterface {
     protected $logPath = '';
     protected $level = 'info';
 
-//    public function __construct($fileName, $logPath) {
-//        if (!empty($fileName)) {
-//            $this->fileName = $fileName;
-//        } else {
-//            throw new \Exception('file_name日志存储名称未配置');
-//        }
-//        if (!empty($logPath)) {
-//            $this->logPath = $logPath;
-//        } else {
-//            throw new \Exception('log_path日志存储位子未配置');
-//        }
-//    }
-
     /**
      * 设置级别
      * @author wxw 2021/4/14
