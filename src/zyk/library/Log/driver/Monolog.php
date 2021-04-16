@@ -15,6 +15,11 @@ class Monolog implements ZykLogInterface {
     protected $fileName = 'default';
     protected $logPath = '';
     protected $level = 'info';
+    protected $sys = '';
+
+    public function logSys($sys) {
+        $this->sys = $sys;
+    }
 
     /**
      * 设置级别
@@ -70,14 +75,15 @@ class Monolog implements ZykLogInterface {
      * @return bool|Logger
      */
     public function setLog($name, $module = '') {
-        $logger = new Logger($name);
-        $logPath = $this->logPath.DIRECTORY_SEPARATOR.date('Y-m');
+        $logger = new Logger($this->sys.'_'.$name);
+        $logPath = $this->logPath.$this->sys.DIRECTORY_SEPARATOR.$name.DIRECTORY_SEPARATOR.date('Y-m');
+        var_dump($logPath);
         if (!is_dir($logPath)) {
             if (mkdir($logPath, 0777, true) === false) {
                 return false;
             }
         }
-        $logFileName = $logPath.DIRECTORY_SEPARATOR.$name.'_'.date('Y-m-d').'.log';
+        $logFileName = $logPath.DIRECTORY_SEPARATOR.$this->sys.'_'.$name.'_'.date('Y-m-d').'.log';
         $handler = new StreamHandler($logFileName, Logger::INFO);
         // 自定义格式
         $output = "[%datetime%]\t%level_name%\t%message%\t%context%\t%extra%\n";

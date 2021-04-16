@@ -47,8 +47,12 @@ class PlatLog {
      * @param string $ip
      * @return mixed
      */
-    public function record($msg, $level, $user = [], $uri = '', $ip = '') {
+    public function record($msg, $level, $user = [], $uri = '', $ip = '', $subsystem = '') {
         $zykLogConfig = config('app.zykLog');
+        if (!empty($subsystem)) {
+            // 在特殊需要传递记录文件名称的时候，
+            $zykLogConfig['file_name'] = $subsystem;
+        }
         $logFactory = $this->loaderFactory($zykLogConfig['log_driver'], $zykLogConfig);
         $driver = $logFactory->getDriver($level); // 获取记录类
         $msgStr = $this->processMsg($msg, $user, $ip, $uri);

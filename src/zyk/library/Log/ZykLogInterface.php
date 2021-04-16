@@ -12,5 +12,7 @@ interface ZykLogInterface {
 
     public function logPath($logPath);
 
+    public function logSys($sys);
+
     public function save($msg);
 }

@@ -27,6 +27,12 @@ class MonologFactory implements LogFactoryInterface {
         } else {
             throw new Exception('log config log_path exist');
         }
+
+        if (isset($config['sys'])) {
+            $this->driver->logSys($config['sys']);
+        } else {
+            throw new Exception('log config log_sys exist');
+        }
     }
 
     /**
