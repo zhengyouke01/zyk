@@ -77,7 +77,6 @@ class Monolog implements ZykLogInterface {
     public function setLog($name, $module = '') {
         $logger = new Logger($this->sys.'_'.$name);
         $logPath = $this->logPath.$this->sys.DIRECTORY_SEPARATOR.$name.DIRECTORY_SEPARATOR.date('Y-m');
-        var_dump($logPath);
         if (!is_dir($logPath)) {
             if (mkdir($logPath, 0777, true) === false) {
                 return false;
