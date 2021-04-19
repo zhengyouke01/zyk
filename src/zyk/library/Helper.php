@@ -144,11 +144,12 @@ if (!function_exists('zykLog')) {
      *
      * @param string $msg 日志记录的信息
      * @param string $level 日志等级，目前可以记录info 、error 、warning。默认info
+     * @param string $subsystem 需要写入到的指定子系统的系统标识，用于子跨系统目录的方式
      * @param array $user 操作人信息。需要记录的操作人信息，最后按json格式存入日志内容中，默认为当前登陆用户的用户信息，如果未登录，存储空
      * @param string $uri 操作地址、参数。默认为请求方式、url和body。如果非请求，默认空
      * @param string $ip 操作者（客户端）ip
      */
-    function zykLog($msg, $level = 'INFO', $user = [], $uri = '', $ip = '') {
-        \zyk\library\Log\Log::record($msg, $level, $user, $uri, $ip);
+    function zykLog($msg, $level = 'INFO', $subsystem = '', $user = [], $uri = '', $ip = '') {
+        \zyk\library\Log\Log::record($msg, $level, $user, $uri, $ip, $subsystem);
     }
 }
