@@ -10,7 +10,7 @@ class Log extends \think\Facade {
      * @return string
      */
     static public function getFacadeClass() {
-        return "\\zyk\\library\\log\\PlatLog";
+        return "\\zyk\\library\\Log\\PlatLog";
     }
 
 }
