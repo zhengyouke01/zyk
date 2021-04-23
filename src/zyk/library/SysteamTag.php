@@ -29,6 +29,9 @@ return [
         15 => 'ZYK_RENEW', // 续签
         16 => 'ZYK_ASK', // 订单问询
         17 => 'ZYK_EDIT', // 订单修改员
+        18 => 'ZYK_CONSULT_ASSISTANT', // 咨询助理
+        19 => 'ZYK_INTERPRETER', // 口译
+        20 => 'ZYK_PROJECT_DEVELOP', // 项目开发
     ],
     // 身份等级标识
     'identity_level' => [

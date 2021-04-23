@@ -57,7 +57,9 @@ class Config {
         ZYK_RENEW => '续签',
         ZYK_ASK => '问询',
         ZYK_EDIT => '修改员',
-
+        ZYK_CONSULT_ASSISTANT => '咨询助理',
+        ZYK_INTERPRETER => '口译',
+        ZYK_PROJECT_DEVELOP => '项目开发',
     ];
 
     /**
