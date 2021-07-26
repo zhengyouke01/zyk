@@ -153,3 +153,17 @@ if (!function_exists('zykLog')) {
         \zyk\library\Log\Log::record($msg, $level, $user, $uri, $ip, $subsystem);
     }
 }
+
+if (!function_exists('queue_producer')) {
+    /**
+     * 队列调用类
+     * @author lyj 2021/7/26
+     *
+     * @param $queueName string 队列名称，监听的频道
+     * @param $message string 发送的消息
+     * @return mixed
+     */
+    function queue_producer($queueName, $message) {
+        return  \zyk\library\queue\Queue::send($queueName, $message);
+    }
+}
