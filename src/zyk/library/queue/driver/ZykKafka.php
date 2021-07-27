@@ -15,9 +15,18 @@ class ZykKafKa {
     private $brokers = 'localhost:9092';
 
     public function __construct($conf = []) {
+        // 验证扩展是否存在
+        if (!extension_loaded('rdkafka')) {
+            throw new \Exception('rdkafka extension not exist');
+        }
+
         $this->username = $conf['username'] ?? '';
         $this->password = $conf['password'] ?? '';
-        !empty($conf['brokers']) ? $this->brokers = $conf['brokers'] : '';
+        $broker = Env::get('kafka.brokers');
+        empty($broker)? (!empty($conf['brokers']) ? $this->brokers = $conf['brokers'] : '' ) : $broker;
+        $this->brokers = $broker;
+
+
     }
 
 
@@ -35,38 +44,27 @@ class ZykKafKa {
         if (is_array($value)) {
             $value = json_encode($value, JSON_UNESCAPED_UNICODE);
         }
-        //消息key
-        if (empty($key)) {
-            $key = self::createUniqueKey();
-        }
         //broker
-        if (empty($broker)) {
-            $broker = Env::get('kafka.brokers') ?? 'localhost:9092';
-        }
-        try {
-            //配置调用
-            $conf = $this->getConf();
-            $rk = new \RdKafka\Producer($conf);
-            $rk->addBrokers($broker);
-            $topic = $rk->newTopic($topics);
-            //分区RD_KAFKA_PARTITION_UA代表未赋值； 0—RD_KAFKA_MSG_F_BLOCK 阻塞生产；消息
-            $topic->produce(RD_KAFKA_PARTITION_UA, 0, $value);
+        $broker = $this->brokers;
+        //配置调用
+        $conf = $this->getConf();
+        $rk = new \RdKafka\Producer($conf);
+        $rk->addBrokers($broker);
+        $topic = $rk->newTopic($topics);
+        //分区RD_KAFKA_PARTITION_UA代表未赋值； 0—RD_KAFKA_MSG_F_BLOCK 阻塞生产；消息
+        $topic->produce(RD_KAFKA_PARTITION_UA, 0, $value);
 
-            //消息刷出重试
-            $timeout_ms = 5000; //
-            for ($retry = 0; $retry < 5; $i++) {
-                $result = $rk->flush($timeout_ms);
-                if ($result === RD_KAFKA_RESP_ERR_NO_ERROR) {
-                    return true;
-                    break;
-                }
+        //消息刷出重试
+        $timeout_ms = 5000; //
+        for ($retry = 0; $retry < 5; $i++) {
+            $result = $rk->flush($timeout_ms);
+            if ($result === RD_KAFKA_RESP_ERR_NO_ERROR) {
+                return true;
             }
-            //失败后输出
-            if ($result !== RD_KAFKA_RESP_ERR_NO_ERROR) {
-                return false;
-            }
-        } catch (\Exception $exception) {
-            return $exception->getMessage();
+        }
+        //失败后输出
+        if ($result !== RD_KAFKA_RESP_ERR_NO_ERROR) {
+            throw new \Exception('kafka queue produce push fail');
         }
     }
 
