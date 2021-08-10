@@ -56,7 +56,7 @@ class ZykKafKa {
 
         //消息刷出重试
         $timeout_ms = 5000; //
-        for ($retry = 0; $retry < 5; $i++) {
+        for ($retry = 0; $retry < 5; $retry++) {
             $result = $rk->flush($timeout_ms);
             if ($result === RD_KAFKA_RESP_ERR_NO_ERROR) {
                 return true;
