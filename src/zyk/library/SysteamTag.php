@@ -32,6 +32,7 @@ return [
         18 => 'ZYK_CONSULT_ASSISTANT', // 咨询助理
         19 => 'ZYK_INTERPRETER', // 口译
         20 => 'ZYK_PROJECT_DEVELOP', // 项目开发
+        21 => 'ZYK_ATM', // ATM
     ],
     // 身份等级标识
     'identity_level' => [
@@ -67,6 +68,11 @@ return [
         18 => 'FLOW_UPLOAD_CERT', // 上传电子正式
         19 => 'FLOW_MAIL_CERT', // 邮寄证书
         20 => 'FLOW_RECEIVE_CERT', //领取证书原件
-        21 => 'FLOW_BEOVER' // 完结
+        21 => 'FLOW_BEOVER', // 完结
+        22 => 'FLOW_REVIEWABLE',//可排审reviewable
+        23 => 'FLOW_REGISTER',//注册register
+        24 => 'FLOW_SAMPLING',//抽样sampling
+        25 => 'FLOW_ESTIMATE_PLAN',//安排评估计划estimate_plan
+        26 => 'FLOW_ANNOUNCE',//公示announce
     ]
 ];
