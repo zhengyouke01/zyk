@@ -7,9 +7,11 @@ namespace zyk\library\Exception;
 
 //use app\common\service\Monolog;
 use Exception;
+use think\console\Output as ConsoleOutput;
 use think\exception\ErrorException;
 use think\exception\Handle;
 use think\exception\HttpException;
+use think\exception\ThrowableError;
 use zyk\library\traits\Jump;
 use zyk\tools\log\Monolog;
 
@@ -49,14 +51,14 @@ class Http extends Handle {
             // 检查错误级别
             if (in_array($e->getSeverity(),  [E_NOTICE, E_WARNING, E_USER_NOTICE, E_USER_WARNING])) {
                 // notice和warning的处理
-                $msg = '错误信息:'.$e->getMessage(). '， 错误位置：'.$e->getFile().'，行：'.$e->getLine().'，详细错误: '.$e->getTraceAsString();
+                $msg = '错误信息:'.$e->getMessage(). '， 错误位置：'.$e->getFile().'，行：'.$e->getLine();
                 zykLog($msg, 'warning');
             } else {
-                $msg = '错误信息:'.$e->getMessage(). '， 错误位置：'.$e->getFile().'，行：'.$e->getLine().'，详细错误: '.$e->getTraceAsString();
+                $msg = '错误信息:'.$e->getMessage(). '， 错误位置：'.$e->getFile().'，行：'.$e->getLine();
                 zykLog($msg, 'error');
             }
         } else {
-            $msg = '错误信息:'.$e->getMessage(). '， 错误位置：'.$e->getFile().'，行：'.$e->getLine().'，详细错误: '.$e->getTraceAsString();
+            $msg = '错误信息:'.$e->getMessage(). '， 错误位置：'.$e->getFile().'，行：'.$e->getLine();
             zykLog($msg, 'error');
         }
         // 错误返回
@@ -69,6 +71,31 @@ class Http extends Handle {
         }
     }
 
+    /**
+     * 脚本记录异常
+     * @author wxw 2021/12/2
+     *
+     * @param ConsoleOutput $output
+     * @param Exception $e
+     */
+    public function renderForConsole(ConsoleOutput $output, Exception $e) {
+        // 错误记录
+        if ($e instanceof ErrorException) {
+            // 检查错误级别
+            if (in_array($e->getSeverity(),  [E_NOTICE, E_WARNING, E_USER_NOTICE, E_USER_WARNING])) {
+                // notice和warning的处理
+                $msg = '错误信息:'.$e->getMessage(). '， 错误位置：'.$e->getFile().'，行：'.$e->getLine();
+                zykLog($msg, 'warning');
+            } else {
+                $msg = '错误信息:'.$e->getMessage(). '， 错误位置：'.$e->getFile().'，行：'.$e->getLine();
+                zykLog($msg, 'error');
+            }
+        } else {
+            $msg = '错误信息:'.$e->getMessage(). '， 错误位置：'.$e->getFile().'，行：'.$e->getLine();
+            zykLog($msg, 'error');
+        }
+        $output->renderException($e);
+    }
 
     /**
      * 关闭错误级别的情况下
