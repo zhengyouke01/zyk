@@ -73,6 +73,8 @@ class Monolog implements ZykLogInterface {
      * 2019-08-20
      * @param $name
      * @return bool|Logger
+     *
+     * @modify wxw 错误日志单独记录文件
      */
     public function setLog($name, $module = '') {
         $logger = new Logger($this->sys.'_'.$name);
@@ -82,7 +84,11 @@ class Monolog implements ZykLogInterface {
                 return false;
             }
         }
-        $logFileName = $logPath.DIRECTORY_SEPARATOR.$this->sys.'_'.$name.'_'.date('Y-m-d').'.log';
+        if (strtolower($this->level) != 'info') {
+            $logFileName = $logPath.DIRECTORY_SEPARATOR.$this->sys.'_'.$name.'_'.date('Y-m-d').'_error.log';
+        } else {
+            $logFileName = $logPath.DIRECTORY_SEPARATOR.$this->sys.'_'.$name.'_'.date('Y-m-d').'.log';
+        }
         $handler = new StreamHandler($logFileName, Logger::INFO);
         // 自定义格式
         $output = "[%datetime%]\t%level_name%\t%message%\t%context%\t%extra%\n";
