@@ -84,6 +84,22 @@ class Config {
         ZYK_FINANCE_SYS => '财务结算系统',
         ZYK_OPERATION_SYS => '运维监控管理系统',
         ZYK_TASK_SYS => '工单系统',
+        ZYK_BUTLER_SYS => '优证管家小程序系统',
+    ];
+
+    /**
+     * 系统标识对应的名称
+     * @var string[]
+     */
+    protected $sysStrName = [
+        'operation' => '供应链管理系统',
+        'project' => '交付管理系统',
+        'service' => '商务管理系统',
+        'finace' => '财务结算系统',
+        'common' => '脚本模块',
+        'task' => '工单系统',
+        'login' => '登陆系统',
+        'butler' => '优证管家小程序系统',
     ];
 
 
@@ -152,7 +168,7 @@ class Config {
      */
     public function getVal($var, $field) {
         if (!isset($this->$var)) {
-             return false;
+            return false;
         }
         $data = $this->$var;
         if (isset($data[$field])) {
