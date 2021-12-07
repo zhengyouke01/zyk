@@ -100,6 +100,7 @@ class Config {
         'task' => '工单系统',
         'login' => '登陆系统',
         'butler' => '优证管家小程序系统',
+        'app' => 'APP系统'
     ];
 
 
