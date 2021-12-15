@@ -7,7 +7,6 @@ namespace zyk\library\Log;
 use think\App;
 use zyk\library\Auth\AppAuth;
 use zyk\library\Auth\AuthUser;
-use zyk\library\Config;
 use zyk\library\Log\factory\MonologFactory;
 
 class PlatLog {
@@ -30,11 +29,10 @@ class PlatLog {
      */
     private $sys = '';
 
-    public function __construct(Config $sysConfig) {
+    public function __construct() {
         $zykLogConfig = config('app.zykLog');
         if (isset($zykLogConfig['file_name'])) {
-            $sys = $zykLogConfig['file_name'];
-            $this->sys = $sysConfig->getVal('sysStrName', $sys) ?  $sysConfig->getVal('sysStrName', $sys) : '无系统标记';
+            $this->sys = $zykLogConfig['file_name'];
         }
     }
 
@@ -96,29 +94,20 @@ class PlatLog {
         // ip处理，填充默认
         $ip = empty($ip)? (empty(request()->ip())? '':request()->ip()) :$ip;
         // uri资源内容处理
-        if (PHP_SAPI == 'cli') {
-            $uriInfo = "脚本:".request()->pathinfo();
-        } else {
-            $uriInfo = request()->method().' ';
-            $uriInfo .= empty($uri)? (empty(request()->url()) ? '': request()->url()) :$uri;
-            if (request()->isPost()) {
-                // 记录post参数
-                $uriInfo.=' body:'.json_encode(request()->param(), JSON_UNESCAPED_UNICODE);
-            }
+        $uriInfo = request()->method().' ';
+        $uriInfo .= empty($uri)? (empty(request()->url()) ? '': request()->url()) :$uri;
+        if (request()->isPost()) {
+            // 记录post参数
+            $uriInfo.=' body:'.json_encode(request()->param(), JSON_UNESCAPED_UNICODE);
         }
-
         // 处理用户信息
         $userInfo = '';
         if (!empty($user)) {
             $userInfo = json_encode($user, JSON_UNESCAPED_UNICODE);
         } else {
-            if (PHP_SAPI == 'cli') {
-                $userInfo = '{}';
-            } else {
-                $user = logUserInfo(app(AuthUser::class)->getUserInfo());
-                if (!empty($user)) {
-                    $userInfo = json_encode($user, JSON_UNESCAPED_UNICODE);
-                }
+            $user = logUserInfo(app(AuthUser::class)->getUserInfo());
+            if (!empty($user)) {
+                $userInfo = json_encode($user, JSON_UNESCAPED_UNICODE);
             }
         }
         return "$ip"."\t".$uriInfo."\t".$sys."\t".$userInfo."\t".$msg;
