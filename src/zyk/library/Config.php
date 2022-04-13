@@ -61,6 +61,8 @@ class Config {
         ZYK_INTERPRETER => '口译',
         ZYK_PROJECT_DEVELOP => '项目开发',
         ZYK_ATM => 'ATM',
+        ZYK_QA => 'QA',
+        ZYK_DOC_ASSISTANT => '文档助理'
     ];
 
     /**

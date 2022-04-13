@@ -33,6 +33,8 @@ return [
         19 => 'ZYK_INTERPRETER', // 口译
         20 => 'ZYK_PROJECT_DEVELOP', // 项目开发
         21 => 'ZYK_ATM', // ATM
+        22 => 'ZYK_QA', // QA
+        23 => 'ZYK_DOC_ASSISTANT', // 文档助理
     ],
     // 身份等级标识
     'identity_level' => [
