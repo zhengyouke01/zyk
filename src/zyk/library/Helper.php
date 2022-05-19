@@ -18,7 +18,7 @@ if (!function_exists('logic')) {
 // 返回redis连接类
 if (!function_exists('redis')) {
     function redis($config = []) {
-        $config = array_merge($config, config('app.redis'));
+        $config = array_merge(config('app.redis'), $config);
         $db_id = 0;
         if (!empty($config['db_id'])) {
             $db_id = $config['db_id'];
