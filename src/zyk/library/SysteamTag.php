@@ -35,6 +35,7 @@ return [
         21 => 'ZYK_ATM', // ATM
         22 => 'ZYK_QA', // QA
         23 => 'ZYK_DOC_ASSISTANT', // 文档助理
+        24 => 'ENTEPRISE_ADMINISTRATOR', // 企业管理员
     ],
     // 身份等级标识
     'identity_level' => [

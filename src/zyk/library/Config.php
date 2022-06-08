@@ -62,7 +62,8 @@ class Config {
         ZYK_PROJECT_DEVELOP => '项目开发',
         ZYK_ATM => 'ATM',
         ZYK_QA => 'QA',
-        ZYK_DOC_ASSISTANT => '文档助理'
+        ZYK_DOC_ASSISTANT => '文档助理',
+        ENTEPRISE_ADMINISTRATOR => '企业管理员',
     ];
 
     /**

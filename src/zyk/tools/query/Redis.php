@@ -93,6 +93,26 @@ class Redis implements BaseInterface {
         return static::$_instance[$k];
     }
 
+    /**
+     * 动态实例化redis -- swoole的Rpc redis链接会超时
+     * @param array $config
+     * @param array $attr
+     * @return Redis
+     */
+    public static function getRedisExample($config = [], $attr = array()) {
+        if(!is_array($attr)) {
+            $dbId    =    $attr;
+            $attr    =    array();
+            $attr['db_id']    =    $dbId;
+        }
+        $redisNew = new self($config,$attr);
+        //如果不是0号库，选择一下数据库。
+        if($attr['db_id'] != 0){
+            $redisNew->select($attr['db_id']);
+        }
+        return $redisNew;
+    }
+
     private function __clone(){}
 
     /**

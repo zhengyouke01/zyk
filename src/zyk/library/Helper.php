@@ -18,7 +18,7 @@ if (!function_exists('logic')) {
 // 返回redis连接类
 if (!function_exists('redis')) {
     function redis($config = []) {
-        $config = array_merge(config('app.redis'), $config);
+        $config = array_merge($config, config('app.redis'));
         $db_id = 0;
         if (!empty($config['db_id'])) {
             $db_id = $config['db_id'];
@@ -34,8 +34,10 @@ if (!function_exists('redis')) {
 // 返回gearman连接类
 if (!function_exists('gearman')) {
     function gearman() {
+        $host = empty(Env::get('gearman.host')) ? '127.0.0.1' : Env::get('gearman.host');
+        $port = empty(Env::get('gearman.port')) ? 4730 : Env::get('gearman.port');
         $gmc = new GearmanClient();
-        $gmc->addServer();
+        $gmc->addServer($host, $port);
         return $gmc;
     }
 }
@@ -127,10 +129,13 @@ function res_get_data($data) {
  */
 function logUserInfo($userInfo) {
     $logUserInfo = [
-        'uid' => defined("UID")? UID:0,
+        'uid' => defined("UID") ? UID :0,
         'usertype' => defined("USER_TYPE") ? USER_TYPE: '',
         'username' =>  $userInfo['nickname'] ?? '',
         'account' => $userInfo['username'] ?? '',
+        'org_id' => $userInfo['org_id'] ?? '',
+        'role_id' => $userInfo['role_id'] ?? '',
+        'info_id' => $userInfo['info_id'] ?? '',
     ];
     if (defined("USER_TYPE") &&  defined("ZYK_ADMIN_SUPER_ADMIN") && USER_TYPE == ZYK_ADMIN_SUPER_ADMIN) {
         $logUserInfo['uid'] = $userInfo['account_id'] ?? -1;
@@ -167,3 +172,4 @@ if (!function_exists('queue_producer')) {
         return  \zyk\library\queue\Queue::send($queueName, $message);
     }
 }
+
