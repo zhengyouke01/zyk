@@ -1,4 +1,5 @@
 <?php
+use think\facade\Env;
 
 if (!function_exists('logic')) {
     /**
@@ -18,13 +19,18 @@ if (!function_exists('logic')) {
 // 返回redis连接类
 if (!function_exists('redis')) {
     function redis($config = []) {
-        $config = array_merge($config, config('app.redis'));
+        $config = array_merge(config('app.redis'), $config);
         $db_id = 0;
         if (!empty($config['db_id'])) {
             $db_id = $config['db_id'];
         }
+        $isActive = $config['redis_active'] ?? 0;
         try {
-            return \zyk\tools\query\Redis::getInstance($config, $db_id);
+            if ($isActive == 1) {
+                return \zyk\tools\query\Redis::getRedisExample($config, $db_id);
+            } else {
+                return \zyk\tools\query\Redis::getInstance($config, $db_id);
+            }
         } catch (\Exception $e) {
             throw new \Exception('redis连接异常');
         }
