@@ -54,16 +54,16 @@ class Qiniu implements BaseInterface {
      * @param string $ext 加后缀，一般为下载连接
      * @return string 返回
      */
-    public function downloadUrl($type,$fkey, $ext = '') {
-        if($type == 1) {
-            $url = config('app.qiniu.file_upload_domain').$fkey;
+    public function downloadUrl($type,$fkey, $ext = '', $config = 'app.qiniu.file_upload_domain') {
+        if ($type == 1) {
+            $url = config($config) . $fkey;
             if(!empty($ext)) {
                 $url .= "?attname=" . md5($fkey). $ext;
             }
             $auth = $this->downloadAuth();
             return $auth->privateDownloadUrl($url);
         }else {
-            $url = config('app.qiniu.file_upload_domain').$fkey;
+            $url = config($config) . $fkey;
             if(!empty($ext)) {
                 $url .= "?attname=". $ext;
             }
