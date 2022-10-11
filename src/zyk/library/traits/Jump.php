@@ -113,6 +113,20 @@ trait Jump {
     }
 
     /**
+     * ws封装后统一返回
+     * @author YYNOEL 2022/10/11
+     * @param $data
+     * @param $code
+     * @param $msg
+     * @param $status
+     * @return false|string
+     */
+    public function resultMsg($data = [], $code = 0, $msg = "",  $status = '') {
+        $msg = ['code' => $code, 'msg' => $msg, 'data' => $data, 'status' => $status,];
+        return json_encode($msg, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+    }
+
+    /**
      * URL重定向
      * @access protected
      * @param  string         $url 跳转的URL表达式
