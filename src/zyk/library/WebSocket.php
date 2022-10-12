@@ -5,6 +5,8 @@ namespace zyk\library;
 use GatewayWorker\Lib\Gateway;
 use think\facade\Env;
 use zyk\library\traits\Jump;
+use zyk\tools\jwt\ZykJWT;
+use zyk\tools\rpc\RpcClient;
 
 class WebSocket {
 use Jump;
@@ -36,14 +38,14 @@ use Jump;
         }
         switch ($message['type']) {
             case 'login': //登录
-                Gateway::setSession($clientId, ['connect_time' => time()]);
                 $loginedUid = $this->registerUser($clientId, $message);
                 if (is_string($loginedUid)){
                     $this->success($clientId, '登录成功', ['uid' => $loginedUid]);
+                    app(RpcClient::class)->call('class', 'app\common\logic\MessageNotice::sendHistoryMsg', ['clientId' => $clientId]);
                 }
                 break;
             case 'ping': //ping
-                $this->success($clientId, '心跳成功');
+                $this->success($clientId, '心跳成功', [],1, 'success', 0);
                 break;
             case 'pong': // 客户端主动关闭
                 $thisSession = Gateway::getSession($clientId);
@@ -136,7 +138,7 @@ use Jump;
         }
         // 特殊非单客户端限制
 
-        $uid = $userInfo['type'].'-'.$userInfo['user_id'].md5($token);
+        $uid = $userInfo['type'].'-'.$userInfo['user_id']."-".md5($token);
 
         // 查询已经的客户端
         $userClients = Gateway::getClientIdByUid($uid);
@@ -150,12 +152,15 @@ use Jump;
                 Gateway::closeClient($existClientId);
             }
         }
+        Gateway::setSession($clientId, ['connect_time' => time(), 'uid'=> $uid]);
         return $uid;
     }
 
-    public function success($clientId = "", $message = "", $data = [], $code = 1, $type = "success") {
+    public function success($clientId = "", $message = "", $data = [], $code = 1, $type = "success", $isAddLog = 1) {
         $msg = $this->resultMsg($data, $code, $message, $type);
-        zykLog("客户端：" . $clientId . "返回消息：" . $msg);
+        if ($isAddLog == 1){
+            zykLog("客户端：" . $clientId . "返回消息：" . $msg);
+        }
         return self::sendMsg($clientId, $msg);
     }
 
