@@ -138,7 +138,7 @@ use Jump;
         }
         // 特殊非单客户端限制
 
-        $uid = $userInfo['type'].'-'.$userInfo['user_id']."-".md5($token);
+        $uid = $userInfo['account_id']."-".md5($token);
 
         // 查询已经的客户端
         $userClients = Gateway::getClientIdByUid($uid);
