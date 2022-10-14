@@ -10,9 +10,6 @@ use zyk\tools\rpc\RpcClient;
 
 class WebSocket {
 use Jump;
-    public static function onConnect($clientId = ""){
-        echo "连接成功".$clientId;
-    }
 
     /**
      * 当客户端发来消息时触发
@@ -45,7 +42,7 @@ use Jump;
                 }
                 break;
             case 'ping': //ping
-                $this->success($clientId, '心跳成功', [],1, 'success', 0);
+                $this->success($clientId, '心跳成功', [],1, 'success');
                 break;
             case 'pong': // 客户端主动关闭
                 $thisSession = Gateway::getSession($clientId);
@@ -55,7 +52,6 @@ use Jump;
                 }
                 break;
             default:
-                zykLog("异常连接".$clientId);
                 Gateway::closeClient($clientId);
                 break;
         }
@@ -80,15 +76,7 @@ use Jump;
         }
         return true;
     }
-
-    /**
-     * 当用户断开连接时触发
-     * @param $clientId
-     * @return void
-     */
-    public static function onClose($clientId = "") {
-        echo '连接断开'.$clientId;
-    }
+    
 
     /**
      * @param $clientId
@@ -156,11 +144,8 @@ use Jump;
         return $uid;
     }
 
-    public function success($clientId = "", $message = "", $data = [], $code = 1, $type = "success", $isAddLog = 1) {
+    public function success($clientId = "", $message = "", $data = [], $code = 1, $type = "success") {
         $msg = $this->resultMsg($data, $code, $message, $type);
-        if ($isAddLog == 1){
-            zykLog("客户端：" . $clientId . "返回消息：" . $msg);
-        }
         return self::sendMsg($clientId, $msg);
     }
 
@@ -180,7 +165,6 @@ use Jump;
         if ($isClose == 1) {
             Gateway::closeClient($clientId);
         }
-        zykLog("客户端：" . $clientId . "返回消息：" . $msg);
         return true;
     }
 
