@@ -3,6 +3,7 @@
 namespace zyk\library;
 
 use GatewayWorker\Lib\Gateway;
+use think\Db;
 use think\facade\Env;
 use zyk\library\traits\Jump;
 use zyk\tools\jwt\ZykJWT;
@@ -36,9 +37,10 @@ use Jump;
         switch ($message['type']) {
             case 'login': //登录
                 $loginedUid = $this->registerUser($clientId, $message);
-                if (is_string($loginedUid)){
-                    $this->success($clientId, '登录成功', ['uid' => $loginedUid]);
-                    app(RpcClient::class)->call('class', 'app\common\logic\MessageNotice::sendHistoryMsg', ['clientId' => $clientId]);
+                if (isset($loginedUid['uid'])){
+                    $this->success($clientId, '登录成功', ['uid' => $loginedUid['uid']]);
+                    // 发送历史荣誉榜消息
+                    $this->sendHistoryMsg($clientId, $loginedUid['account_id']);
                 }
                 break;
             case 'ping': //ping
@@ -76,7 +78,7 @@ use Jump;
         }
         return true;
     }
-    
+
 
     /**
      * @param $clientId
@@ -141,7 +143,7 @@ use Jump;
             }
         }
         Gateway::setSession($clientId, ['connect_time' => time(), 'uid'=> $uid]);
-        return $uid;
+        return ['uid' => $uid, 'account_id' => $userInfo['account_id']];
     }
 
     public function success($clientId = "", $message = "", $data = [], $code = 1, $type = "success") {
@@ -178,6 +180,53 @@ use Jump;
      */
     private static function sendMsg($clientId, $data) {
         return Gateway::sendToClient($clientId, $data);
+    }
+
+
+    /**
+     * 发送荣誉榜历史消息
+     * @author YYNOEL 2022/10/17
+     * @param $clientId
+     * @param $uid
+     * @return bool
+     */
+    private function sendHistoryMsg($clientId = "", $uid = ""){
+        // 判断是否当天的数据
+        $startTime = strtotime(date('Y-m-d').'00:00:00');
+        $endTime = strtotime(date('Y-m-d').'23:59:59');
+        $where = [
+            ['status', '=', 1],
+            ['create_time', 'between', [$startTime, $endTime]],
+        ];
+        // 查找历史记录
+        $msgList = Db::name('MessageNotice')->where($where)->select();
+        unset($where, $startTime, $endTime);
+        if (!empty($msgList)){
+            array_walk($msgList, function ($value) use ($uid, $clientId){
+                switch ($value['msg_type']){
+                    case 'honor':
+                        // 如果当天数据就进行发送
+                        // 匹配在线用户
+                        $accountlist = [];
+                        $accountIdData = !empty($value['account_id']) ? explode(",", $value['account_id']) : [];
+                        if (!in_array($uid, $accountIdData)) {
+                            Gateway::sendToClient($clientId, $value['msg']);
+                            $accountlist[] = $uid;
+                        }
+                        // 更改发送状态
+                        if (!empty($accountlist)){
+                            $accountlist = implode(',', array_merge($accountIdData, array_unique($accountlist)));
+                            // 更改发送状态
+                            Db::name('MessageNotice')->where(['id' => $value['id']])->update(['account_id' => $accountlist]);
+                        }
+                        break;
+                    default:
+                        break;
+                }
+            });
+            unset($msgList, $onLineClientList);
+        }
+        return true;
     }
 
 }
