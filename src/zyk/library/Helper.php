@@ -172,10 +172,11 @@ if (!function_exists('queue_producer')) {
      *
      * @param $queueName string 队列名称，监听的频道
      * @param $message string 发送的消息
+     * @param $queueConf array 自定义队列完整配置
      * @return mixed
      */
-    function queue_producer($queueName, $message) {
-        return  \zyk\library\queue\Queue::send($queueName, $message);
+    function queue_producer($queueName, $message, $queueConf = []) {
+        return  \zyk\library\queue\Queue::send($queueName, $message, $queueConf);
     }
 }
 

@@ -21,8 +21,12 @@ class ZykQueue {
      * @author LYJ 2021.07.23
      * @param $queueName
      * @param $message
+     * @param $conf array 自定义kafka配置
      */
-    public function send($queueName, $message) {
+    public function send($queueName, $message, $conf = []) {
+        if (!empty($conf)) {
+            $this->queueConf = $conf;
+        }
         $object = Loader::factory($this->queueDriver, '\\zyk\\library\\queue\\driver\\', $this->queueConf);
         return $object->send($queueName, $message);
     }
