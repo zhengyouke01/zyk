@@ -121,7 +121,7 @@ trait Jump {
      * @param $status
      * @return false|string
      */
-    public function resultMsg($data = [], $code = 0, $msg = "",  $status = '') {
+    public static function resultMsg($data = [], $code = 0, $msg = "",  $status = '') {
         $msg = ['code' => $code, 'msg' => $msg, 'data' => $data, 'status' => $status,];
         return json_encode($msg, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
     }

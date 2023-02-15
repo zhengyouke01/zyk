@@ -180,3 +180,29 @@ if (!function_exists('queue_producer')) {
     }
 }
 
+if (!function_exists('system_log')) {
+    /**
+     * @author wxw 2023/2/15
+     *
+     * @param $type string 类型
+     * @param $typeId string 数据id
+     * @param $info string 内容
+     * @param $orgId int 联营id
+     */
+    function system_log($type, $typeId, $info, $orgId = '') {
+        $userInfo = app(AuthUser::class)->getUserInfo();
+        $userName = ($userInfo['role_name']?? '').'+'.($userInfo['nickname'] ?? '');
+        $data = [
+            'user_name' => $userName,
+            'org_id' => empty($orgId) ? ($userInfo['org_id'] ?? 2) : $orgId,
+            'mobile' => $userInfo['username'] ?? '',
+            'type' => $type,
+            'type_id' => $typeId,
+            'create_time' => time(),
+            'info' => $info,
+            'account_id' => $userInfo['account_id'] ?? 0
+        ];
+        \think\Db::name('system_record')->insert($data);
+    }
+}
+
