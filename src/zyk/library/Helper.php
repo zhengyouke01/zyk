@@ -190,7 +190,7 @@ if (!function_exists('system_log')) {
      * @param $orgId int 联营id
      */
     function system_log($type, $typeId, $info, $orgId = '') {
-        $userInfo = app(AuthUser::class)->getUserInfo();
+        $userInfo = app(\zyk\library\Auth\AuthUser::class)->getUserInfo();
         $userName = ($userInfo['role_name']?? '').'+'.($userInfo['nickname'] ?? '');
         $data = [
             'user_name' => $userName,
