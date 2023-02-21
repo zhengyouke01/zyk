@@ -202,7 +202,7 @@ if (!function_exists('system_log')) {
             'info' => $info,
             'account_id' => $userInfo['account_id'] ?? 0
         ];
-        \think\Db::name('system_record')->insert($data);
+        \think\Db::name('system_record')->insertGetId($data);
     }
 }
 
