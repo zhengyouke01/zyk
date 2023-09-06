@@ -1047,6 +1047,18 @@ class Redis implements BaseInterface {
     }
 
     /**
+     * 游标获取数据
+     * @param $key
+     * @param $iIterator
+     * @param null $strPattern
+     * @param null $iCount
+     */
+    public function hScan($key, &$iIterator, $strPattern = null, $iCount = null) {
+        return $this->redis->hScan($key, $iIterator, $strPattern, $iCount);
+    }
+
+
+    /**
      * string类型自增
      * @param $key
      * @param int $num
