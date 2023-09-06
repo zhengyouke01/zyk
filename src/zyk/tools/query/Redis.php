@@ -1045,4 +1045,24 @@ class Redis implements BaseInterface {
     public function rpoplpush($srcKey, $dstKey) {
         return  $this->redis->rpoplpush($srcKey, $dstKey);
     }
+
+    /**
+     * string类型自增
+     * @param $key
+     * @param int $num
+     * @return int
+     */
+    public function incrBy($key, $num = 1) {
+        return $this->redis->incrBy($key, $num);
+    }
+
+    /**
+     * string类型自减
+     * @param $key
+     * @param int $num
+     * @return int
+     */
+    public function decrBy($key, $num = 1) {
+        return $this->redis->decrBy($key, $num);
+    }
 }
