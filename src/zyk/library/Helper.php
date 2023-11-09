@@ -189,9 +189,9 @@ if (!function_exists('system_log')) {
      * @param $info string 内容
      * @param $orgId int 联营id
      */
-    function system_log($type, $typeId, $info, $orgId = '') {
+    function system_log($type, $typeId, $info, $orgId = '', $nickName = '管理员+系统账号') {
         $userInfo = app(\zyk\library\Auth\AuthUser::class)->getUserInfo();
-        $userName = ($userInfo['role_name']?? '').'+'.($userInfo['nickname'] ?? '');
+        $userName = empty($userInfo) ? $nickName :  ( $userInfo['role_name']?? '').'+'.($userInfo['nickname'] ?? '');
         $data = [
             'user_name' => $userName,
             'org_id' => empty($orgId) ? ($userInfo['org_id'] ?? 2) : $orgId,
