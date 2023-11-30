@@ -23,10 +23,7 @@ class ZykKafKa {
         $this->username = $conf['username'] ?? '';
         $this->password = $conf['password'] ?? '';
         $broker = Env::get('kafka.brokers');
-        empty($broker)? (!empty($conf['brokers']) ? $this->brokers = $conf['brokers'] : '' ) : $broker;
-        $this->brokers = $broker;
-
-
+        $this->brokers = !empty($conf['brokers']) ? $conf['brokers'] : $broker;
     }
 
 
