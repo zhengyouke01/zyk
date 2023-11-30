@@ -11,11 +11,14 @@ class Config {
     // 主要角色标记（ 管理员、咨询师、销售等）
     protected $userTypeTags = null;
 
+    protected $flowUnitTags = null;
+
     public function __construct() {
         $tags = include __DIR__.'/SysteamTag.php';
         if ($tags) {
             $this->sysTags = $tags['sys_tags'];
             $this->userTypeTags = $tags['admin_user_info_type'];
+            $this->flowUnitTags = $tags['flow_unit'];
         }
     }
 
