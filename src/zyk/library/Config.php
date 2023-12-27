@@ -37,7 +37,7 @@ class Config {
         ZYK_PROJECT_ASSISTANT => ZYK_SUPPLY_SYS,
         ZYK_RISK => ZYK_SUPPLY_SYS,
         ZYK_OPERATION => ZYK_OPERATION_SYS,
-        ZYK_RENEW => ZYK_SERVICE_SYS
+        ZYK_RENEW => ZYK_SERVICE_SYS,
     ];
 
     /**
@@ -90,6 +90,8 @@ class Config {
         ZYK_FINANCE_SYS => '财务结算系统',
         ZYK_OPERATION_SYS => '运维监控管理系统',
         ZYK_TASK_SYS => '工单系统',
+        ZYK_TOOLS_SYS => '工具系统',
+        ZYK_AUDITS_SYS => '安全审计系统'
     ];
 
 
