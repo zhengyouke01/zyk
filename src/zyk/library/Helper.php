@@ -206,3 +206,34 @@ if (!function_exists('system_log')) {
     }
 }
 
+
+/**
+ * 字符串替换
+ * @author LYJ 2024.04.25
+ */
+if (!function_exists('zyk_str_replace')) {
+    function zyk_str_replace($data = '') {
+        if (empty($data)) {
+            return $data;
+        }
+        $config = get_config('base_config');
+        $switchOn = $config['replace_words_switch'] ?? 0;//是否替换数据开关
+        $replaceColumn = $config['replace_words_list'] ?? [];//替换关键词
+        if ($switchOn == 1 && !empty($replaceColumn)) {
+            if (is_array($data)) {
+                //数组替换
+                $data = json_encode($data, JSON_UNESCAPED_UNICODE);
+                foreach ($replaceColumn as $word => $replace) {
+                    $data = str_replace($word, $replace, $data);
+                }
+                $data = json_decode($data, true);
+            } elseif(is_string($data)) {
+                //字符串替换
+                foreach ($replaceColumn as $word => $replace) {
+                    $data = str_replace($word, $replace, $data);
+                }
+            }
+        }
+        return $data;
+    }
+}

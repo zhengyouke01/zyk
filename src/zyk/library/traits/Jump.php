@@ -45,6 +45,11 @@ trait Jump {
      */
     protected function success($msg = '', $data = '',  array $header = [])
     {
+        if (function_exists('zyk_str_replace')) {
+            $msg = zyk_str_replace($msg);
+            $data = zyk_str_replace($data);
+        }
+
         $result = [
             'code' => 1,
             'msg'  => $msg,
@@ -72,6 +77,10 @@ trait Jump {
      */
     protected function error($msg = '', $data = '',  array $header = [])
     {
+        if (function_exists('zyk_str_replace')) {
+            $msg = zyk_str_replace($msg);
+            $data = zyk_str_replace($data);
+        }
         $type = $this->getResponseType();
         $result = [
             'code' => 0,
@@ -100,6 +109,11 @@ trait Jump {
      */
     protected function result($data, $code = 0, $msg = '', $type = '', array $header = [])
     {
+        if (function_exists('zyk_str_replace')) {
+            $msg = zyk_str_replace($msg);
+            $data = zyk_str_replace($data);
+        }
+
         $result = [
             'code' => $code,
             'msg'  => $msg,
