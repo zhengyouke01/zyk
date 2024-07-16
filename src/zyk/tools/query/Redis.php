@@ -1077,4 +1077,16 @@ class Redis implements BaseInterface {
     public function decrBy($key, $num = 1) {
         return $this->redis->decrBy($key, $num);
     }
+
+    /**
+     * 重命名 key值
+     * @author wxw 2024/7/10
+     *
+     * @param $srcKey
+     * @param $dstKey
+     * @return false|int|\Redis
+     */
+    public function rename($srcKey, $dstKey) {
+        return $this->redis->rename($srcKey, $dstKey);
+    }
 }
