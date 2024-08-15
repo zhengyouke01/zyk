@@ -79,5 +79,8 @@ return [
         24 => 'FLOW_SAMPLING',//抽样sampling
         25 => 'FLOW_ESTIMATE_PLAN',//安排评估计划estimate_plan
         26 => 'FLOW_ANNOUNCE',//公示announce
+        27 => 'FLOW_RESERVE',//预排档期
+        28 => 'FLOW_JOINT_PASS',// 合评通过
+        29 => 'FLOW_AUDIT_FINISH',// 整改完成
     ]
 ];
