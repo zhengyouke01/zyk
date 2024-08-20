@@ -237,3 +237,33 @@ if (!function_exists('zyk_str_replace')) {
         return $data;
     }
 }
+
+if (!function_exists('get_address_by_ip')) {
+    /**
+     * 通过IP获取归属地
+     * @author GJQ 2024.07.23
+     * @param $ip
+     * @return string
+     */
+    function get_address_by_ip($ip = '') {
+        $url = "https://whois.pconline.com.cn/ipJson.jsp?json=true&ip={$ip}";
+        $options = [
+            'headers' => [
+                'user-agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'
+            ],
+            'timeout' => 2.0, //超时时间
+        ];
+
+        try {
+            $client = new \GuzzleHttp\Client();
+            $request = $client->get($url, $options);
+            $res = $request->getBody();
+            $res = iconv('GBK', 'UTF-8//IGNORE', $res);
+            $res = json_decode($res, true);
+            return ($res['pro'] ?? '') . ($res['city'] ?? '') . ($res['region'] ?? '');
+        } catch (\Exception $e) {
+            zykLog('IP归属地获取失败' . $e->getMessage() . '错误位置' . $e->getFile() . '行数' . $e->getLine(), 'error');
+            return '';
+        }
+    }
+}

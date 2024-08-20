@@ -10,7 +10,8 @@
         "firebase/php-jwt": "^5.2",
         "jpush/jpush": "^3.6",
         "elasticsearch/elasticsearch": "^6.7",
-        "monolog/monolog": "^2.1"
+        "monolog/monolog": "^2.1",
+        "guzzlehttp/guzzle": "^7.9"
     },
     "autoload" : {
         "files": [
