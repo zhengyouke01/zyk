@@ -55,6 +55,9 @@ class Qiniu implements BaseInterface {
      * @return string 返回
      */
     public function downloadUrl($type,$fkey, $ext = '', $config = 'app.qiniu.file_upload_domain') {
+        if ($ext) {
+            $ext = urlencode(urldecode($ext));
+        }
         if ($type == 1) {
             $url = config($config) . $fkey;
             if(!empty($ext)) {
