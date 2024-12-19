@@ -534,13 +534,16 @@ class Qiniu implements BaseInterface {
      * @author GJQ 2020-03-16
      * @param $fkey
      * @param string $ext
-     * @param string $attrNmae
+     * @param string $attrName
      * @return string
      */
-    public function downloadFileUrl($fkey, $ext = '', $attrNmae = '') {
+    public function downloadFileUrl($fkey, $ext = '', $attrName = '') {
         $url = config('app.qiniu.file_upload_domain') . $fkey;
+        if ($attrName) {
+            $attrName = urlencode(urldecode($attrName));
+        }
         if(!empty($ext)) {
-            $url .= empty($attrNmae) ? "?attname=" . md5($fkey). $ext : "?attname=" . $attrNmae . $ext;
+            $url .= empty($attrName) ? "?attname=" . md5($fkey). $ext : "?attname=" . $attrName . $ext;
         }
         return $url;
     }
